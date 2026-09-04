@@ -75,23 +75,37 @@ svg{display:block}
 .page-title h1{margin:0 0 6px;font-size:29px;letter-spacing:-.025em}
 .page-title p{margin:0;color:var(--muted);font-size:14px}
 .top-actions{display:flex;align-items:center;gap:12px}
-.search{position:relative;width:min(380px,40vw)}
+.search{position:relative;width:min(390px,40vw)}
 .search input{
   width:100%;border:1px solid var(--line);background:var(--surface);border-radius:13px;
   padding:11px 14px 11px 42px;outline:none;
 }
 .search input:focus{border-color:#b7c7be;box-shadow:0 0 0 4px rgba(47,111,82,.08)}
 .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search-results{
+  position:absolute;top:48px;left:0;right:0;background:var(--surface);border:1px solid var(--line);
+  border-radius:13px;box-shadow:var(--shadow-lg);overflow:hidden;display:none;z-index:15;
+}
+.search-results.show{display:block}
+.search-result{
+  padding:11px 13px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;gap:12px;
+}
+.search-result:last-child{border-bottom:0}
+.search-result:hover{background:var(--surface-2)}
+.search-result strong{display:block;font-size:12px}
+.search-result span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.search-type{font-size:9px!important;text-transform:uppercase;letter-spacing:.05em;font-weight:850;color:var(--accent)!important}
 .profile{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 6px;border:1px solid var(--line);background:var(--surface);border-radius:14px}
 .avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:850}
 .profile-meta strong{display:block;font-size:13px}
 .profile-meta span{font-size:11px;color:var(--muted)}
-.primary-btn,.secondary-btn,.ghost-btn{
+.primary-btn,.secondary-btn,.ghost-btn,.danger-btn{
   border-radius:11px;font-weight:800;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;
 }
 .primary-btn{border:0;background:var(--accent);color:#fff;box-shadow:0 7px 18px rgba(47,111,82,.16)}
 .secondary-btn{border:1px solid var(--line);background:var(--surface);color:#48515b}
 .ghost-btn{border:0;background:transparent;color:var(--accent);padding:6px 2px}
+.danger-btn{border:1px solid #f0caca;background:#fff;color:var(--danger)}
 .primary-btn:hover{filter:brightness(.97)}
 .secondary-btn:hover{background:var(--surface-2)}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
@@ -147,11 +161,9 @@ tbody tr:last-child td{border-bottom:0}
 }
 .view{display:none}
 .view.active{display:block}
-.list-card{padding:0;overflow:hidden}
-.list-card .panel-header{padding:18px 18px 0}
 .entity-list{display:flex;flex-direction:column}
 .entity-row{
-  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);
 }
 .entity-row:last-child{border-bottom:0}
 .entity-row.clickable{cursor:pointer}
@@ -199,6 +211,11 @@ tbody tr:last-child td{border-bottom:0}
 .rank-row strong{display:block;font-size:13px}
 .rank-row span{display:block;font-size:11px;color:var(--muted)}
 .rank-value{text-align:right;font-size:13px;font-weight:850}
+.empty-state{padding:34px 18px;text-align:center;color:var(--muted);font-size:13px}
+.demo-banner{
+  display:flex;justify-content:space-between;gap:14px;align-items:center;padding:12px 14px;background:#fff;
+  border:1px dashed #cfd6d2;border-radius:13px;margin-bottom:16px;color:#58616c;font-size:12px
+}
 
 /* Drawer */
 .overlay{
@@ -207,7 +224,7 @@ tbody tr:last-child td{border-bottom:0}
 }
 .overlay.show{opacity:1;pointer-events:auto}
 .drawer{
-  position:fixed;top:0;right:0;width:min(560px,100vw);height:100vh;background:var(--surface);
+  position:fixed;top:0;right:0;width:min(570px,100vw);height:100vh;background:var(--surface);
   box-shadow:var(--shadow-lg);transform:translateX(100%);transition:.24s ease;z-index:21;display:flex;flex-direction:column
 }
 .drawer.show{transform:translateX(0)}
@@ -216,7 +233,7 @@ tbody tr:last-child td{border-bottom:0}
 .drawer-header p{margin:0;color:var(--muted);font-size:12px}
 .close-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;color:#59636f}
 .drawer-body{padding:22px;overflow:auto;flex:1}
-.drawer-footer{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+.drawer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 .detail-section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
 .detail-section:first-child{border-top:0;padding-top:0;margin-top:0}
 .detail-section h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
@@ -242,7 +259,7 @@ tbody tr:last-child td{border-bottom:0}
 }
 .modal-wrap.show{opacity:1;pointer-events:auto}
 .modal{
-  width:min(780px,100%);max-height:92vh;overflow:auto;background:var(--surface);
+  width:min(800px,100%);max-height:92vh;overflow:auto;background:var(--surface);
   border-radius:20px;box-shadow:var(--shadow-lg);transform:translateY(12px);transition:.2s ease
 }
 .modal-wrap.show .modal{transform:translateY(0)}
@@ -261,6 +278,11 @@ tbody tr:last-child td{border-bottom:0}
   width:100%;border:1px solid var(--line);background:var(--surface);border-radius:11px;padding:10px 11px;outline:none;color:var(--text)
 }
 .field textarea{resize:vertical;min-height:82px}
+.recipe-builder{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fbfbfc}
+.recipe-add{display:grid;grid-template-columns:1fr 120px auto;gap:8px;align-items:end}
+.recipe-lines{margin-top:10px}
+.recipe-line{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:12px}
+.recipe-line button{border:0;background:transparent;color:var(--danger);font-weight:850}
 .toast{
   position:fixed;right:24px;bottom:24px;background:#1f2933;color:#fff;padding:12px 16px;
   border-radius:12px;box-shadow:0 14px 30px rgba(0,0,0,.2);opacity:0;transform:translateY(12px);
@@ -282,6 +304,7 @@ tbody tr:last-child td{border-bottom:0}
   .grid-4,.product-card-grid{grid-template-columns:1fr}
   .form-grid,.detail-grid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
+  .recipe-add{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -301,8 +324,8 @@ tbody tr:last-child td{border-bottom:0}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></symbol>
   <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></symbol>
   <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path><path d="M9 12h10"></path></symbol>
-  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"></path><path d="M14 2v5h5M9 12h6M9 16h6"></path></symbol>
-  <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5-8 4.5-8-4.5z"></path><path d="M4 7.5V17l8 4 8-4V7.5M12 12v9"></path></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="m13.5 6.5 4 4"></path></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7h-6V1"></path><path d="M20 7a9 9 0 1 0 1 8"></path></symbol>
 </svg>
 
 <div class="app">
@@ -317,14 +340,12 @@ tbody tr:last-child td{border-bottom:0}
 
     <nav class="nav-section">
       <div class="nav-item active" data-view="inicio"><svg class="svg-icon"><use href="#i-home"/></svg>Inicio</div>
-
       <div class="nav-title">Operación</div>
       <div class="nav-item" data-view="pedidos"><svg class="svg-icon"><use href="#i-shopping-bag"/></svg>Pedidos</div>
       <div class="nav-item" data-view="clientes"><svg class="svg-icon"><use href="#i-users"/></svg>Clientes</div>
       <div class="nav-item" data-view="productos"><svg class="svg-icon"><use href="#i-flower"/></svg>Productos</div>
       <div class="nav-item" data-view="entregas"><svg class="svg-icon"><use href="#i-truck"/></svg>Entregas</div>
       <div class="nav-item" data-view="inventario"><svg class="svg-icon"><use href="#i-inventory"/></svg>Inventario</div>
-
       <div class="nav-title">Gestión</div>
       <div class="nav-item" data-view="ventas"><svg class="svg-icon"><use href="#i-dollar"/></svg>Ventas</div>
       <div class="nav-item" data-view="reportes"><svg class="svg-icon"><use href="#i-chart"/></svg>Reportes</div>
@@ -332,7 +353,7 @@ tbody tr:last-child td{border-bottom:0}
 
     <div class="sidebar-footer">
       <strong>Ecosistema Bloomé</strong><br>
-      Cada pedido conecta cliente, productos, inventario, entrega y venta.
+      Un solo dato, múltiples vistas. Pedido, cliente, producto, inventario, entrega y venta permanecen conectados.
     </div>
   </aside>
 
@@ -346,7 +367,8 @@ tbody tr:last-child td{border-bottom:0}
       <div class="top-actions">
         <label class="search">
           <span class="search-icon"><svg class="svg-icon"><use href="#i-search"/></svg></span>
-          <input id="globalSearch" placeholder="Buscar pedido, cliente o producto..." />
+          <input id="globalSearch" autocomplete="off" placeholder="Buscar en todo Bloomé OS..." />
+          <div class="search-results" id="searchResults"></div>
         </label>
         <div class="profile">
           <div class="avatar">G</div>
@@ -360,29 +382,26 @@ tbody tr:last-child td{border-bottom:0}
 
     <!-- INICIO -->
     <section class="view active" id="view-inicio">
+      <div class="demo-banner">
+        <span>El sistema inicia con un único caso completo: un cliente, un producto, un pedido, una entrega y su inventario relacionado. Puedes crear tus propias pruebas desde cada pantalla.</span>
+        <button class="secondary-btn" id="resetDemoBtn"><svg class="svg-icon"><use href="#i-refresh"/></svg>Restablecer ejemplo</button>
+      </div>
+
       <div class="grid-4">
         <article class="card kpi">
-          <div class="label">Pedidos de hoy</div>
-          <div class="value" id="kpiOrdersToday">0</div>
-          <div class="note">Venta directa</div>
+          <div class="label">Pedidos activos</div><div class="value" id="kpiOrders">0</div><div class="note">No cancelados</div>
           <div class="kpi-icon"><svg class="svg-icon"><use href="#i-shopping-bag"/></svg></div>
         </article>
         <article class="card kpi">
-          <div class="label">Ventas registradas</div>
-          <div class="value" id="kpiSales">₡0</div>
-          <div class="note">Pedidos pagados o parciales</div>
+          <div class="label">Ventas registradas</div><div class="value" id="kpiSales">₡0</div><div class="note">Total de pedidos</div>
           <div class="kpi-icon"><svg class="svg-icon"><use href="#i-dollar"/></svg></div>
         </article>
         <article class="card kpi">
-          <div class="label">Entregas pendientes</div>
-          <div class="value" id="kpiDeliveries">0</div>
-          <div class="note">Pendientes o en ruta</div>
+          <div class="label">Entregas pendientes</div><div class="value" id="kpiDeliveries">0</div><div class="note">Pendientes o en ruta</div>
           <div class="kpi-icon"><svg class="svg-icon"><use href="#i-truck"/></svg></div>
         </article>
         <article class="card kpi">
-          <div class="label">Alertas de inventario</div>
-          <div class="value" id="kpiInventory">0</div>
-          <div class="note">Stock bajo o por revisar</div>
+          <div class="label">Alertas de inventario</div><div class="value" id="kpiInventory">0</div><div class="note">Stock disponible bajo</div>
           <div class="kpi-icon"><svg class="svg-icon"><use href="#i-inventory"/></svg></div>
         </article>
       </div>
@@ -390,14 +409,11 @@ tbody tr:last-child td{border-bottom:0}
       <div class="section-grid">
         <article class="card panel">
           <div class="panel-header">
-            <div>
-              <h2>Pedidos recientes</h2>
-              <span class="sub">Acceso directo a cliente, producto y entrega</span>
-            </div>
-            <button class="ghost-btn" data-go="pedidos">Ver todos</button>
+            <div><h2>Pedidos recientes</h2><span class="sub">Abre cualquier dato relacionado sin salir del ecosistema</span></div>
+            <button class="ghost-btn" data-go="pedidos">Ver pedidos</button>
           </div>
           <div class="table-wrap">
-            <table style="min-width:700px">
+            <table style="min-width:690px">
               <thead><tr><th>Pedido</th><th>Cliente</th><th>Producto</th><th>Total</th><th>Estado</th></tr></thead>
               <tbody id="homeOrdersBody"></tbody>
             </table>
@@ -406,10 +422,7 @@ tbody tr:last-child td{border-bottom:0}
 
         <article class="card panel">
           <div class="panel-header">
-            <div>
-              <h2>Próximas entregas</h2>
-              <span class="sub">Conectadas al pedido original</span>
-            </div>
+            <div><h2>Próximas entregas</h2><span class="sub">Conectadas al pedido y al cliente</span></div>
             <button class="ghost-btn" data-go="entregas">Ver entregas</button>
           </div>
           <div class="entity-list" id="homeDeliveries"></div>
@@ -419,32 +432,15 @@ tbody tr:last-child td{border-bottom:0}
       <div class="section-grid">
         <article class="card panel">
           <div class="panel-header">
-            <div>
-              <h2>Ventas de la semana</h2>
-              <span class="sub">Vista preliminar</span>
-            </div>
+            <div><h2>Estado de inventario</h2><span class="sub">Disponibilidad después de compromisos de pedidos</span></div>
+            <button class="ghost-btn" data-go="inventario">Ver inventario</button>
           </div>
-          <div class="chart-value" id="homeWeeklySales">₡0</div>
-          <div class="chart-sub">Información tomada de los mismos pedidos</div>
-          <div class="chart">
-            <svg viewBox="0 0 600 240" preserveAspectRatio="none">
-              <polyline fill="none" stroke="#2f6f52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
-                points="10,205 95,176 180,185 265,128 350,144 435,88 520,62 590,35"/>
-              <g fill="#2f6f52">
-                <circle cx="10" cy="205" r="6"/><circle cx="95" cy="176" r="6"/><circle cx="180" cy="185" r="6"/>
-                <circle cx="265" cy="128" r="6"/><circle cx="350" cy="144" r="6"/><circle cx="435" cy="88" r="6"/>
-                <circle cx="520" cy="62" r="6"/><circle cx="590" cy="35" r="6"/>
-              </g>
-            </svg>
-          </div>
+          <div class="entity-list" id="homeInventory"></div>
         </article>
 
         <article class="card panel">
           <div class="panel-header">
-            <div>
-              <h2>Accesos rápidos</h2>
-              <span class="sub">Todo forma parte del mismo flujo</span>
-            </div>
+            <div><h2>Accesos rápidos</h2><span class="sub">Todas las pantallas trabajan con los mismos datos</span></div>
           </div>
           <div class="quick-links">
             <button class="quick-link" data-go="pedidos"><svg class="svg-icon"><use href="#i-shopping-bag"/></svg>Pedidos</button>
@@ -453,9 +449,6 @@ tbody tr:last-child td{border-bottom:0}
             <button class="quick-link" data-go="entregas"><svg class="svg-icon"><use href="#i-truck"/></svg>Entregas</button>
             <button class="quick-link" data-go="inventario"><svg class="svg-icon"><use href="#i-inventory"/></svg>Inventario</button>
             <button class="quick-link" data-go="ventas"><svg class="svg-icon"><use href="#i-dollar"/></svg>Ventas</button>
-          </div>
-          <div class="info-box" style="margin-top:14px">
-            Un mismo pedido puede abrir a su cliente, producto y entrega. A la inversa, desde una entrega o un cliente se puede regresar al pedido relacionado.
           </div>
         </article>
       </div>
@@ -467,13 +460,8 @@ tbody tr:last-child td{border-bottom:0}
         <div class="filters">
           <select class="filter-select" id="orderStatusFilter">
             <option value="">Todos los estados</option>
-            <option>Nuevo</option>
-            <option>Pendiente de pago</option>
-            <option>Confirmado</option>
-            <option>En preparación</option>
-            <option>Listo</option>
-            <option>En ruta</option>
-            <option>Entregado</option>
+            <option>Nuevo</option><option>Pendiente de pago</option><option>Confirmado</option>
+            <option>En preparación</option><option>Listo</option><option>En ruta</option><option>Entregado</option><option>Cancelado</option>
           </select>
           <select class="filter-select" id="orderChannelFilter">
             <option value="">Todos los canales</option>
@@ -484,32 +472,27 @@ tbody tr:last-child td{border-bottom:0}
       </div>
 
       <article class="card panel">
-        <div class="panel-header">
-          <div><h2>Todos los pedidos</h2><span class="sub">El pedido es el núcleo del ecosistema</span></div>
-        </div>
+        <div class="panel-header"><div><h2>Pedidos</h2><span class="sub">El pedido conecta todo el flujo operativo</span></div></div>
         <div class="table-wrap">
-          <table style="min-width:1050px">
-            <thead>
-              <tr><th>Pedido</th><th>Cliente</th><th>Producto</th><th>Canal</th><th>Entrega</th><th>Total</th><th>Pago</th><th>Estado</th></tr>
-            </thead>
+          <table style="min-width:1080px">
+            <thead><tr><th>Pedido</th><th>Cliente</th><th>Producto</th><th>Canal</th><th>Entrega</th><th>Total</th><th>Pago</th><th>Estado</th></tr></thead>
             <tbody id="ordersBody"></tbody>
           </table>
         </div>
+        <div class="empty-state" id="ordersEmpty" style="display:none">No hay pedidos con esos filtros.</div>
       </article>
     </section>
 
     <!-- CLIENTES -->
     <section class="view" id="view-clientes">
       <div class="toolbar">
-        <div class="info-box" style="max-width:680px">
-          Un cliente es una sola ficha dentro de Bloomé. Desde aquí se ve su historial de pedidos, cuánto ha comprado y sus entregas relacionadas.
+        <div class="info-box" style="max-width:700px">
+          Un cliente tiene una sola ficha. Sus pedidos, entregas y compras acumuladas se consultan desde el mismo registro.
         </div>
-        <button class="secondary-btn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nuevo cliente</button>
+        <button class="primary-btn" id="newClientBtn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nuevo cliente</button>
       </div>
       <article class="card panel">
-        <div class="panel-header">
-          <div><h2>Clientes</h2><span class="sub">CRM básico conectado a pedidos</span></div>
-        </div>
+        <div class="panel-header"><div><h2>Clientes</h2><span class="sub">CRM conectado a la operación</span></div></div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Cliente</th><th>Contacto</th><th>Pedidos</th><th>Compras acumuladas</th><th>Último pedido</th></tr></thead>
@@ -523,21 +506,25 @@ tbody tr:last-child td{border-bottom:0}
     <section class="view" id="view-productos">
       <div class="toolbar">
         <div class="info-box" style="max-width:760px">
-          <strong>Productos</strong> es el catálogo que Bloomé vende: ramos, arreglos, gift boxes, etc. Aquí viven el nombre, precio y receta del producto. El stock físico se controla en <strong>Inventario</strong>.
+          <strong>Productos</strong> es lo que Bloomé vende: arreglos, ramos, paquetes de flores, flores por unidad y otros artículos. Cada producto puede tener una receta conectada a Inventario.
         </div>
-        <button class="secondary-btn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nuevo producto</button>
+        <button class="primary-btn" id="newProductBtn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nuevo producto</button>
       </div>
       <div class="product-card-grid" id="productsGrid"></div>
     </section>
 
     <!-- ENTREGAS -->
     <section class="view" id="view-entregas">
-      <article class="card panel">
-        <div class="panel-header">
-          <div><h2>Entregas</h2><span class="sub">Cada entrega está enlazada al pedido y al cliente</span></div>
+      <div class="toolbar">
+        <div class="info-box" style="max-width:700px">
+          Cada entrega pertenece a un pedido. Desde la entrega puedes regresar al pedido y al cliente relacionados.
         </div>
+        <button class="primary-btn" id="newDeliveryBtn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nueva entrega</button>
+      </div>
+      <article class="card panel">
+        <div class="panel-header"><div><h2>Entregas</h2><span class="sub">Seguimiento logístico</span></div></div>
         <div class="table-wrap">
-          <table style="min-width:920px">
+          <table style="min-width:930px">
             <thead><tr><th>Entrega</th><th>Pedido</th><th>Cliente</th><th>Fecha</th><th>Zona</th><th>Modalidad</th><th>Estado</th></tr></thead>
             <tbody id="deliveriesBody"></tbody>
           </table>
@@ -549,17 +536,15 @@ tbody tr:last-child td{border-bottom:0}
     <section class="view" id="view-inventario">
       <div class="toolbar">
         <div class="info-box" style="max-width:760px">
-          <strong>Inventario</strong> controla lo que realmente existe: flores, tallos, papel, cintas, floreros e insumos. Los productos consumen estos componentes según su receta.
+          <strong>Inventario</strong> controla lo que Bloomé tiene físicamente. La columna Disponible descuenta automáticamente lo comprometido por pedidos todavía no consumidos.
         </div>
-        <button class="secondary-btn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nuevo insumo</button>
+        <button class="primary-btn" id="newInventoryBtn"><svg class="svg-icon"><use href="#i-plus"/></svg>Nuevo insumo</button>
       </div>
       <article class="card panel">
-        <div class="panel-header">
-          <div><h2>Stock actual</h2><span class="sub">Flores e insumos usados por los productos</span></div>
-        </div>
+        <div class="panel-header"><div><h2>Inventario</h2><span class="sub">Existencia física y disponibilidad operativa</span></div></div>
         <div class="table-wrap">
-          <table>
-            <thead><tr><th>Insumo</th><th>Categoría</th><th>Disponible</th><th>Mínimo</th><th>Estado</th><th>Usado en</th></tr></thead>
+          <table style="min-width:900px">
+            <thead><tr><th>Insumo</th><th>Categoría</th><th>Existencia</th><th>Comprometido</th><th>Disponible</th><th>Mínimo</th><th>Estado</th></tr></thead>
             <tbody id="inventoryBody"></tbody>
           </table>
         </div>
@@ -569,17 +554,16 @@ tbody tr:last-child td{border-bottom:0}
     <!-- VENTAS -->
     <section class="view" id="view-ventas">
       <div class="grid-4">
-        <article class="card kpi"><div class="label">Ventas brutas</div><div class="value" id="salesGross">₡0</div><div class="note">Pedidos registrados</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-dollar"/></svg></div></article>
+        <article class="card kpi"><div class="label">Ventas brutas</div><div class="value" id="salesGross">₡0</div><div class="note">Todos los pedidos no cancelados</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-dollar"/></svg></div></article>
         <article class="card kpi"><div class="label">Cobrado</div><div class="value" id="salesPaid">₡0</div><div class="note">Pedidos pagados</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-dollar"/></svg></div></article>
-        <article class="card kpi"><div class="label">Pendiente</div><div class="value" id="salesPending">₡0</div><div class="note">Por cobrar</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-file"/></svg></div></article>
-        <article class="card kpi"><div class="label">Ticket promedio</div><div class="value" id="salesAvg">₡0</div><div class="note">Por pedido</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-chart"/></svg></div></article>
+        <article class="card kpi"><div class="label">Por cobrar</div><div class="value" id="salesPending">₡0</div><div class="note">Pendiente o parcial</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-shopping-bag"/></svg></div></article>
+        <article class="card kpi"><div class="label">Ticket promedio</div><div class="value" id="salesAvg">₡0</div><div class="note">Por pedido activo</div><div class="kpi-icon"><svg class="svg-icon"><use href="#i-chart"/></svg></div></article>
       </div>
-
       <article class="card panel" style="margin-top:16px">
-        <div class="panel-header"><div><h2>Detalle de ventas</h2><span class="sub">La venta nace del mismo pedido</span></div></div>
+        <div class="panel-header"><div><h2>Detalle de ventas</h2><span class="sub">No existe una venta separada: nace directamente del pedido</span></div></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Pedido</th><th>Cliente</th><th>Canal</th><th>Total</th><th>Pago</th><th>Estado pedido</th></tr></thead>
+            <thead><tr><th>Pedido</th><th>Cliente</th><th>Canal</th><th>Total</th><th>Pago</th><th>Estado</th></tr></thead>
             <tbody id="salesBody"></tbody>
           </table>
         </div>
@@ -590,22 +574,21 @@ tbody tr:last-child td{border-bottom:0}
     <section class="view" id="view-reportes">
       <div class="report-grid">
         <article class="card panel">
-          <div class="panel-header"><div><h2>Productos más vendidos</h2><span class="sub">Basado en los pedidos registrados</span></div></div>
+          <div class="panel-header"><div><h2>Productos más vendidos</h2><span class="sub">Se actualiza con los pedidos</span></div></div>
           <div class="rank-list" id="topProducts"></div>
         </article>
         <article class="card panel">
-          <div class="panel-header"><div><h2>Ventas por canal</h2><span class="sub">Origen de los pedidos</span></div></div>
+          <div class="panel-header"><div><h2>Ventas por canal</h2><span class="sub">Origen comercial de los pedidos</span></div></div>
           <div class="rank-list" id="salesByChannel"></div>
         </article>
       </div>
-
       <div class="report-grid" style="margin-top:16px">
         <article class="card panel">
-          <div class="panel-header"><div><h2>Clientes recurrentes</h2><span class="sub">Clientes con más pedidos</span></div></div>
+          <div class="panel-header"><div><h2>Clientes recurrentes</h2><span class="sub">Cantidad de pedidos por cliente</span></div></div>
           <div class="rank-list" id="repeatClients"></div>
         </article>
         <article class="card panel">
-          <div class="panel-header"><div><h2>Salud operativa</h2><span class="sub">Indicadores rápidos del ecosistema</span></div></div>
+          <div class="panel-header"><div><h2>Salud operativa</h2><span class="sub">Alertas dinámicas del ecosistema</span></div></div>
           <div id="opsHealth"></div>
         </article>
       </div>
@@ -631,66 +614,200 @@ tbody tr:last-child td{border-bottom:0}
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
-<!-- MODAL NUEVO PEDIDO -->
+<!-- MODAL CLIENTE -->
+<div class="modal-wrap" id="clientModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><h2 id="clientModalTitle">Nuevo cliente</h2><p>La ficha se reutiliza en todos sus pedidos.</p></div>
+      <button class="close-btn" data-close-modal="clientModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="clientForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field"><label>Nombre</label><input id="clientName" required /></div>
+          <div class="field"><label>Teléfono</label><input id="clientPhone" required /></div>
+          <div class="field"><label>Email</label><input id="clientEmail" type="email" /></div>
+          <div class="field full"><label>Notas</label><textarea id="clientNotes"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="clientModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar cliente</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL INVENTARIO -->
+<div class="modal-wrap" id="inventoryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><h2 id="inventoryModalTitle">Nuevo insumo</h2><p>Registra una existencia física de Bloomé.</p></div>
+      <button class="close-btn" data-close-modal="inventoryModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="inventoryForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field"><label>Nombre</label><input id="inventoryName" required /></div>
+          <div class="field"><label>Categoría</label><select id="inventoryCategory"><option>Flor</option><option>Follaje</option><option>Empaque</option><option>Base</option><option>Accesorio</option><option>Otro</option></select></div>
+          <div class="field"><label>Existencia física</label><input id="inventoryOnHand" type="number" min="0" step="0.01" required /></div>
+          <div class="field"><label>Mínimo recomendado</label><input id="inventoryMin" type="number" min="0" step="0.01" required /></div>
+          <div class="field"><label>Unidad</label><input id="inventoryUnit" required placeholder="tallos, unidades, rollos..." /></div>
+          <div class="field"><label>Costo unitario</label><input id="inventoryCost" type="number" min="0" step="0.01" value="0" /></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="inventoryModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar insumo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL PRODUCTO -->
+<div class="modal-wrap" id="productModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><h2 id="productModalTitle">Nuevo producto</h2><p>Define lo que el cliente compra y qué inventario consume.</p></div>
+      <button class="close-btn" data-close-modal="productModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="productForm">
+      <div class="modal-body">
+        <div class="form-section">
+          <h3>Información comercial</h3>
+          <div class="form-grid">
+            <div class="field"><label>Nombre</label><input id="productName" required /></div>
+            <div class="field"><label>Categoría</label><select id="productCategory"><option>Arreglo</option><option>Ramo</option><option>Paquete de flores</option><option>Flor por unidad</option><option>Gift box</option><option>Complemento</option><option>Otro</option></select></div>
+            <div class="field"><label>Precio de venta</label><input id="productPrice" type="number" min="0" required /></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3>Receta / consumo de inventario</h3>
+          <div class="recipe-builder">
+            <div class="recipe-add">
+              <div class="field"><label>Insumo</label><select id="recipeInventorySelect"></select></div>
+              <div class="field"><label>Cantidad</label><input id="recipeQty" type="number" min="0.01" step="0.01" value="1" /></div>
+              <button type="button" class="secondary-btn" id="addRecipeBtn">Agregar</button>
+            </div>
+            <div class="recipe-lines" id="recipeLines"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="productModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL PEDIDO -->
 <div class="modal-wrap" id="orderModal">
   <div class="modal">
     <div class="modal-header">
-      <div><h2>Nuevo pedido</h2><p>El pedido conectará automáticamente cliente, producto, entrega y venta.</p></div>
-      <button class="close-btn" id="closeOrderModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+      <div><h2>Nuevo pedido</h2><p>Al guardarlo se crea también su relación con entrega, venta e inventario comprometido.</p></div>
+      <button class="close-btn" data-close-modal="orderModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
     </div>
-    <form id="newOrderForm">
+    <form id="orderForm">
       <div class="modal-body">
-        <section class="form-section">
-          <h3>Cliente y venta</h3>
+        <div class="form-section">
+          <h3>Cliente y producto</h3>
           <div class="form-grid">
-            <div class="field">
-              <label>Cliente existente</label>
-              <select id="newOrderClient"></select>
-            </div>
-            <div class="field">
-              <label>Canal</label>
-              <select id="newOrderChannel"><option>Instagram</option><option>WhatsApp</option><option>Facebook</option><option>Manual</option></select>
-            </div>
-            <div class="field">
-              <label>Producto</label>
-              <select id="newOrderProduct"></select>
-            </div>
-            <div class="field">
-              <label>Estado de pago</label>
-              <select id="newOrderPayment"><option>Pendiente</option><option>Parcial</option><option>Pagado</option></select>
-            </div>
+            <div class="field"><label>Cliente</label><select id="orderClient" required></select></div>
+            <div class="field"><label>Canal</label><select id="orderChannel"><option>Instagram</option><option>WhatsApp</option><option>Facebook</option><option>Manual</option></select></div>
+            <div class="field"><label>Producto</label><select id="orderProduct" required></select></div>
+            <div class="field"><label>Cantidad</label><input id="orderQty" type="number" min="1" step="1" value="1" required /></div>
+            <div class="field"><label>Pago</label><select id="orderPayment"><option>Pendiente</option><option>Parcial</option><option>Pagado</option></select></div>
+            <div class="field"><label>Estado inicial</label><select id="orderStatus"><option>Nuevo</option><option>Pendiente de pago</option><option>Confirmado</option><option>En preparación</option></select></div>
           </div>
-        </section>
-
-        <section class="form-section">
-          <h3>Entrega</h3>
+        </div>
+        <div class="form-section">
+          <h3>Entrega / retiro</h3>
           <div class="form-grid">
-            <div class="field">
-              <label>Modalidad</label>
-              <select id="newOrderFulfillment"><option>Entrega</option><option>Retiro</option></select>
-            </div>
-            <div class="field">
-              <label>Zona / punto de retiro</label>
-              <input id="newOrderArea" placeholder="Ej. Escazú" />
-            </div>
-            <div class="field">
-              <label>Fecha</label>
-              <input id="newOrderDate" type="date" required />
-            </div>
-            <div class="field">
-              <label>Hora</label>
-              <input id="newOrderTime" type="time" required />
-            </div>
-            <div class="field full">
-              <label>Notas</label>
-              <textarea id="newOrderNotes" placeholder="Mensaje de tarjeta, colores, instrucciones, etc."></textarea>
-            </div>
+            <div class="field"><label>Modalidad</label><select id="orderMode"><option>Entrega</option><option>Retiro</option></select></div>
+            <div class="field"><label>Zona o punto de retiro</label><input id="orderArea" required /></div>
+            <div class="field"><label>Fecha</label><input id="orderDate" type="date" required /></div>
+            <div class="field"><label>Hora</label><input id="orderTime" type="time" required /></div>
+            <div class="field full"><label>Notas</label><textarea id="orderNotes"></textarea></div>
           </div>
-        </section>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="secondary-btn" id="cancelOrderModal">Cancelar</button>
+        <button type="button" class="secondary-btn" data-close-modal="orderModal">Cancelar</button>
         <button type="submit" class="primary-btn">Guardar pedido</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL EDITAR PEDIDO -->
+<div class="modal-wrap" id="orderEditModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><h2>Editar pedido</h2><p>Actualiza estado, pago, canal y notas.</p></div>
+      <button class="close-btn" data-close-modal="orderEditModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="orderEditForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field"><label>Canal</label><select id="editOrderChannel"><option>Instagram</option><option>WhatsApp</option><option>Facebook</option><option>Manual</option></select></div>
+          <div class="field"><label>Pago</label><select id="editOrderPayment"><option>Pendiente</option><option>Parcial</option><option>Pagado</option></select></div>
+          <div class="field"><label>Estado</label><select id="editOrderStatus"><option>Nuevo</option><option>Pendiente de pago</option><option>Confirmado</option><option>En preparación</option><option>Listo</option><option>En ruta</option><option>Entregado</option><option>Cancelado</option></select></div>
+          <div class="field full"><label>Notas</label><textarea id="editOrderNotes"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="orderEditModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL ENTREGA -->
+<div class="modal-wrap" id="deliveryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><h2 id="deliveryModalTitle">Nueva entrega</h2><p>Conecta o reprograma la logística de un pedido.</p></div>
+      <button class="close-btn" data-close-modal="deliveryModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="deliveryForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field full"><label>Pedido</label><select id="deliveryOrder" required></select></div>
+          <div class="field"><label>Modalidad</label><select id="deliveryMode"><option>Entrega</option><option>Retiro</option></select></div>
+          <div class="field"><label>Estado</label><select id="deliveryStatus"><option>Pendiente</option><option>En ruta</option><option>Entregado</option></select></div>
+          <div class="field"><label>Fecha</label><input id="deliveryDate" type="date" required /></div>
+          <div class="field"><label>Hora</label><input id="deliveryTime" type="time" required /></div>
+          <div class="field full"><label>Zona / punto de retiro</label><input id="deliveryArea" required /></div>
+          <div class="field full"><label>Notas</label><textarea id="deliveryNotes"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="deliveryModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar entrega</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL AJUSTE STOCK -->
+<div class="modal-wrap" id="stockModal">
+  <div class="modal" style="width:min(520px,100%)">
+    <div class="modal-header">
+      <div><h2>Ajustar existencia</h2><p id="stockModalSubtitle"></p></div>
+      <button class="close-btn" data-close-modal="stockModal"><svg class="svg-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="stockForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field"><label>Nueva existencia física</label><input id="stockNewValue" type="number" min="0" step="0.01" required /></div>
+          <div class="field"><label>Motivo</label><select id="stockReason"><option>Compra / ingreso</option><option>Conteo físico</option><option>Merma</option><option>Corrección</option></select></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="stockModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar ajuste</button>
       </div>
     </form>
   </div>
@@ -699,263 +816,354 @@ tbody tr:last-child td{border-bottom:0}
 <div class="toast" id="toast"></div>
 
 <script>
-const db = {
-  clients:[
-    {id:"C001",name:"María Fernanda",phone:"8812-4021",email:"maria@email.com"},
-    {id:"C002",name:"Sofía Ramírez",phone:"8701-3350",email:"sofia@email.com"},
-    {id:"C003",name:"Lucía Araya",phone:"8899-1144",email:"lucia@email.com"},
-    {id:"C004",name:"Ana Jiménez",phone:"8312-9010",email:"ana@email.com"},
-    {id:"C005",name:"Valeria López",phone:"8990-7411",email:"valeria@email.com"}
-  ],
-  inventory:[
-    {id:"I001",name:"Rosa rosada",category:"Flor",stock:24,min:40,unit:"tallos"},
-    {id:"I002",name:"Rosa blanca",category:"Flor",stock:58,min:35,unit:"tallos"},
-    {id:"I003",name:"Hortensia blanca",category:"Flor",stock:18,min:20,unit:"tallos"},
-    {id:"I004",name:"Eucalipto",category:"Follaje",stock:35,min:20,unit:"tallos"},
-    {id:"I005",name:"Papel floral Ivory",category:"Empaque",stock:6,min:12,unit:"unidades"},
-    {id:"I006",name:"Cinta de algodón",category:"Empaque",stock:14,min:8,unit:"rollos"},
-    {id:"I007",name:"Florero cerámico pequeño",category:"Base",stock:12,min:6,unit:"unidades"}
-  ],
-  products:[
-    {id:"P001",name:"Ramo Rosé",category:"Ramo",price:38000,recipe:[["I001",12],["I004",4],["I005",1],["I006",0.1]]},
-    {id:"P002",name:"Garden Arrangement",category:"Arreglo",price:52000,recipe:[["I002",10],["I003",3],["I004",5],["I007",1]]},
-    {id:"P003",name:"Ivory Bouquet",category:"Ramo",price:32500,recipe:[["I002",9],["I003",1],["I004",3],["I005",1]]},
-    {id:"P004",name:"Citrus Arrangement",category:"Arreglo",price:46000,recipe:[["I001",6],["I003",2],["I004",4],["I007",1]]},
-    {id:"P005",name:"Mini Bouquet",category:"Ramo",price:24000,recipe:[["I001",7],["I004",2],["I005",1]]}
-  ],
-  deliveries:[
-    {id:"D1044",orderId:"BL-1044",mode:"Entrega",date:"03 Sep",time:"11:30 a. m.",area:"Escazú",status:"Entregado"},
-    {id:"D1045",orderId:"BL-1045",mode:"Entrega",date:"03 Sep",time:"2:00 p. m.",area:"Santa Ana",status:"En ruta"},
-    {id:"D1046",orderId:"BL-1046",mode:"Entrega",date:"03 Sep",time:"4:30 p. m.",area:"Rohrmoser",status:"Pendiente"},
-    {id:"D1047",orderId:"BL-1047",mode:"Entrega",date:"03 Sep",time:"6:00 p. m.",area:"Curridabat",status:"Pendiente"},
-    {id:"D1048",orderId:"BL-1048",mode:"Entrega",date:"03 Sep",time:"7:00 p. m.",area:"Escazú",status:"Pendiente"}
-  ],
-  orders:[
-    {id:"BL-1048",clientId:"C001",items:[{productId:"P001",qty:1,price:38000}],channel:"Instagram",payment:"Pendiente",status:"Pendiente de pago",deliveryId:"D1048",notes:"Agregar tarjeta personalizada."},
-    {id:"BL-1047",clientId:"C002",items:[{productId:"P002",qty:1,price:52000}],channel:"WhatsApp",payment:"Pagado",status:"Confirmado",deliveryId:"D1047",notes:"Tonos blancos y verdes."},
-    {id:"BL-1046",clientId:"C003",items:[{productId:"P003",qty:1,price:32500}],channel:"Instagram",payment:"Pagado",status:"En preparación",deliveryId:"D1046",notes:"Sin lilies."},
-    {id:"BL-1045",clientId:"C004",items:[{productId:"P004",qty:1,price:46000}],channel:"WhatsApp",payment:"Pagado",status:"Listo",deliveryId:"D1045",notes:"Entregar antes de las 2:30 p. m."},
-    {id:"BL-1044",clientId:"C005",items:[{productId:"P005",qty:1,price:24000}],channel:"Instagram",payment:"Pagado",status:"Entregado",deliveryId:"D1044",notes:"Pedido completado."}
-  ]
-};
+const STORAGE_KEY="bloome_os_demo_v2";
 
-const titles = {
-  inicio:["Hola, Glori","Aquí tienes un resumen de lo que está pasando en Bloomé."],
-  pedidos:["Pedidos","Cada pedido conecta cliente, producto, pago y entrega."],
-  clientes:["Clientes","Una sola ficha por cliente con todo su historial."],
-  productos:["Productos","Catálogo vendible de Bloomé y su receta de insumos."],
-  entregas:["Entregas","Seguimiento logístico conectado al pedido y al cliente."],
-  inventario:["Inventario","Existencias reales de flores, bases e insumos."],
-  ventas:["Ventas","Lectura financiera construida a partir de los pedidos."],
-  reportes:["Reportes","Indicadores de ventas, clientes, productos y operación."]
-};
+function demoData(){
+  return {
+    clients:[
+      {id:"C001",name:"María Fernanda",phone:"8812-4021",email:"maria@email.com",notes:"Cliente proveniente de Instagram."}
+    ],
+    inventory:[
+      {id:"I001",name:"Rosa roja",category:"Flor",onHand:60,min:24,unit:"tallos",cost:750}
+    ],
+    products:[
+      {id:"P001",name:"Paquete de 12 rosas rojas",category:"Paquete de flores",price:18000,recipe:[{inventoryId:"I001",qty:12}]}
+    ],
+    deliveries:[
+      {id:"D1001",orderId:"BL-1001",mode:"Entrega",date:"2026-09-04",time:"15:00",area:"Escazú",status:"Pendiente",notes:"Entregar en recepción."}
+    ],
+    orders:[
+      {
+        id:"BL-1001",clientId:"C001",items:[{productId:"P001",qty:1,unitPrice:18000}],
+        channel:"Instagram",payment:"Pagado",status:"Confirmado",deliveryId:"D1001",
+        notes:"Mensaje de tarjeta: Feliz cumpleaños.",createdAt:"2026-09-03T20:30:00",inventoryConsumed:false
+      }
+    ]
+  };
+}
 
-function money(v){ return "₡"+Number(v||0).toLocaleString("es-CR"); }
-function byId(arr,id){ return arr.find(x=>x.id===id); }
-function orderTotal(order){ return order.items.reduce((s,i)=>s+i.price*i.qty,0); }
-function clientOrders(clientId){ return db.orders.filter(o=>o.clientId===clientId); }
-function productOrders(productId){ return db.orders.filter(o=>o.items.some(i=>i.productId===productId)); }
-function inventoryProducts(invId){ return db.products.filter(p=>p.recipe.some(r=>r[0]===invId)); }
-function deliveryForOrder(order){ return byId(db.deliveries,order.deliveryId); }
-function clientForOrder(order){ return byId(db.clients,order.clientId); }
-function firstProductForOrder(order){ return byId(db.products,order.items[0]?.productId); }
+let db=loadDB();
+let drawerHistory=[];
+let currentDrawerEntity=null;
+let editingClientId=null;
+let editingInventoryId=null;
+let editingProductId=null;
+let editingDeliveryId=null;
+let editingOrderId=null;
+let stockItemId=null;
+let tempRecipe=[];
 
+function loadDB(){
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY);
+    return saved?JSON.parse(saved):demoData();
+  }catch(e){
+    return demoData();
+  }
+}
+function saveDB(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(db));
+}
+function resetDemo(){
+  db=demoData();
+  saveDB();
+  renderAll();
+  closeDrawer();
+  showToast("Datos restablecidos al ejemplo inicial.");
+}
+function money(v){return "₡"+Number(v||0).toLocaleString("es-CR")}
+function num(v){return Number(v||0)}
+function findById(arr,id){return arr.find(x=>x.id===id)}
+function orderTotal(o){return o.items.reduce((s,i)=>s+num(i.qty)*num(i.unitPrice),0)}
+function activeOrders(){return db.orders.filter(o=>o.status!=="Cancelado")}
+function clientOrders(id){return db.orders.filter(o=>o.clientId===id)}
+function productOrders(id){return db.orders.filter(o=>o.items.some(i=>i.productId===id))}
+function inventoryProducts(id){return db.products.filter(p=>p.recipe.some(r=>r.inventoryId===id))}
+function clientForOrder(o){return findById(db.clients,o.clientId)}
+function productForItem(i){return findById(db.products,i.productId)}
+function deliveryForOrder(o){return findById(db.deliveries,o.deliveryId)}
+function formatDate(date){
+  if(!date)return "Sin fecha";
+  const d=new Date(date+"T12:00:00");
+  return d.toLocaleDateString("es-CR",{day:"2-digit",month:"short",year:"numeric"}).replace(".","");
+}
+function formatTime(time){
+  if(!time)return "Sin hora";
+  const [h,m]=time.split(":").map(Number);
+  const suffix=h>=12?"p. m.":"a. m.";
+  return `${((h+11)%12)+1}:${String(m).padStart(2,"0")} ${suffix}`;
+}
+function nextId(prefix,arr){
+  const nums=arr.map(x=>parseInt(String(x.id).replace(/\D/g,""),10)).filter(Number.isFinite);
+  return prefix+String((nums.length?Math.max(...nums):0)+1).padStart(prefix==="BL-"?4:3,"0");
+}
 function orderStatusClass(s){
   return ({
     "Nuevo":"new","Pendiente de pago":"pending","Confirmado":"confirmed","En preparación":"preparing",
     "Listo":"ready","En ruta":"route","Entregado":"delivered","Cancelado":"cancelled"
-  })[s] || "new";
+  })[s]||"new";
 }
-function deliveryStatusClass(s){
-  return s==="Entregado"?"delivered":s==="En ruta"?"route":"pending";
+function deliveryStatusClass(s){return s==="Entregado"?"delivered":s==="En ruta"?"route":"pending"}
+
+function committedInventory(invId){
+  let total=0;
+  db.orders.forEach(o=>{
+    if(o.status==="Cancelado"||o.inventoryConsumed)return;
+    o.items.forEach(item=>{
+      const p=findById(db.products,item.productId);
+      if(!p)return;
+      const rec=p.recipe.find(r=>r.inventoryId===invId);
+      if(rec)total+=num(rec.qty)*num(item.qty);
+    });
+  });
+  return total;
 }
-function inventoryState(i){
-  if(i.stock < i.min) return ["Bajo","low"];
-  if(i.stock <= i.min*1.2) return ["Revisar","review"];
+function availableInventory(inv){
+  return Math.max(0,num(inv.onHand)-committedInventory(inv.id));
+}
+function inventoryState(inv){
+  const available=availableInventory(inv);
+  if(available<inv.min)return ["Bajo","low"];
+  if(available<=inv.min*1.2)return ["Revisar","review"];
   return ["Disponible","ok"];
 }
+function productAvailableUnits(product,excludeOrderId=null){
+  if(!product.recipe.length)return Infinity;
+  let max=Infinity;
+  product.recipe.forEach(r=>{
+    const inv=findById(db.inventory,r.inventoryId);
+    if(!inv)return;
+    let committed=0;
+    db.orders.forEach(o=>{
+      if(o.id===excludeOrderId||o.status==="Cancelado"||o.inventoryConsumed)return;
+      o.items.forEach(item=>{
+        const p=findById(db.products,item.productId);
+        const rec=p?.recipe.find(x=>x.inventoryId===r.inventoryId);
+        if(rec)committed+=num(rec.qty)*num(item.qty);
+      });
+    });
+    const avail=Math.max(0,num(inv.onHand)-committed);
+    max=Math.min(max,Math.floor(avail/num(r.qty)));
+  });
+  return max;
+}
+function consumeInventoryForOrder(order){
+  if(order.inventoryConsumed)return;
+  order.items.forEach(item=>{
+    const p=findById(db.products,item.productId);
+    if(!p)return;
+    p.recipe.forEach(r=>{
+      const inv=findById(db.inventory,r.inventoryId);
+      if(inv)inv.onHand=Math.max(0,num(inv.onHand)-num(r.qty)*num(item.qty));
+    });
+  });
+  order.inventoryConsumed=true;
+}
 
-const pageTitle=document.getElementById("pageTitle");
-const pageSubtitle=document.getElementById("pageSubtitle");
-const navItems=[...document.querySelectorAll(".nav-item[data-view]")];
-const views=[...document.querySelectorAll(".view")];
+const titles={
+  inicio:["Hola, Glori","Aquí tienes un resumen de lo que está pasando en Bloomé."],
+  pedidos:["Pedidos","Cada pedido conecta cliente, producto, pago, inventario y entrega."],
+  clientes:["Clientes","Una sola ficha por cliente con todo su historial."],
+  productos:["Productos","Catálogo vendible de Bloomé y su relación con inventario."],
+  entregas:["Entregas","Seguimiento logístico conectado al pedido y al cliente."],
+  inventario:["Inventario","Existencias físicas, compromisos y disponibilidad."],
+  ventas:["Ventas","Información financiera derivada directamente de los pedidos."],
+  reportes:["Reportes","Indicadores dinámicos de todo el ecosistema."]
+};
 
 function go(view){
-  navItems.forEach(n=>n.classList.toggle("active",n.dataset.view===view));
-  views.forEach(v=>v.classList.toggle("active",v.id===`view-${view}`));
-  pageTitle.textContent=titles[view][0];
-  pageSubtitle.textContent=titles[view][1];
+  document.querySelectorAll(".nav-item[data-view]").forEach(n=>n.classList.toggle("active",n.dataset.view===view));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===`view-${view}`));
+  document.getElementById("pageTitle").textContent=titles[view][0];
+  document.getElementById("pageSubtitle").textContent=titles[view][1];
+  document.getElementById("globalSearch").value="";
+  hideSearchResults();
+  if(view==="pedidos")renderOrders();
   window.scrollTo({top:0,behavior:"smooth"});
 }
-navItems.forEach(n=>n.addEventListener("click",()=>go(n.dataset.view)));
+document.querySelectorAll(".nav-item[data-view]").forEach(n=>n.addEventListener("click",()=>go(n.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
 
-function renderHome(){
-  const paidOrPartial=db.orders.filter(o=>o.payment==="Pagado"||o.payment==="Parcial");
-  document.getElementById("kpiOrdersToday").textContent=db.orders.length;
-  document.getElementById("kpiSales").textContent=money(paidOrPartial.reduce((s,o)=>s+orderTotal(o),0));
-  document.getElementById("kpiDeliveries").textContent=db.deliveries.filter(d=>d.status!=="Entregado").length;
-  document.getElementById("kpiInventory").textContent=db.inventory.filter(i=>i.stock<=i.min*1.2).length;
-  document.getElementById("homeWeeklySales").textContent=money(db.orders.reduce((s,o)=>s+orderTotal(o),0));
+function emptyRow(cols,text){return `<tr><td colspan="${cols}" class="empty-state">${text}</td></tr>`}
 
-  document.getElementById("homeOrdersBody").innerHTML=db.orders.slice(0,5).map(o=>{
-    const c=clientForOrder(o), p=firstProductForOrder(o);
+function renderHome(){
+  const active=activeOrders();
+  const gross=active.reduce((s,o)=>s+orderTotal(o),0);
+  document.getElementById("kpiOrders").textContent=active.length;
+  document.getElementById("kpiSales").textContent=money(gross);
+  document.getElementById("kpiDeliveries").textContent=db.deliveries.filter(d=>d.status!=="Entregado").length;
+  document.getElementById("kpiInventory").textContent=db.inventory.filter(i=>availableInventory(i)<i.min).length;
+
+  document.getElementById("homeOrdersBody").innerHTML=db.orders.length?db.orders.slice(0,5).map(o=>{
+    const c=clientForOrder(o), p=productForItem(o.items[0]);
     return `<tr class="clickable" onclick="openEntity('order','${o.id}')">
       <td><span class="link">${o.id}</span></td>
-      <td>${c.name}</td>
-      <td>${p.name}</td>
+      <td>${c?.name||"Cliente eliminado"}</td>
+      <td>${p?.name||"Producto eliminado"}</td>
       <td class="amount">${money(orderTotal(o))}</td>
       <td><span class="status ${orderStatusClass(o.status)}">${o.status}</span></td>
     </tr>`;
-  }).join("");
+  }).join(""):emptyRow(5,"Todavía no hay pedidos.");
 
-  document.getElementById("homeDeliveries").innerHTML=db.deliveries
-    .filter(d=>d.status!=="Entregado").slice(0,4).map(d=>{
-      const o=byId(db.orders,d.orderId), c=clientForOrder(o);
-      return `<div class="entity-row clickable" onclick="openEntity('delivery','${d.id}')">
-        <div class="entity-main"><strong>${d.time} · ${d.area}</strong><span>${d.orderId} · ${c.name}</span></div>
-        <div class="entity-meta"><span class="status ${deliveryStatusClass(d.status)}">${d.status}</span></div>
-      </div>`;
-    }).join("");
+  const upcoming=db.deliveries.filter(d=>d.status!=="Entregado");
+  document.getElementById("homeDeliveries").innerHTML=upcoming.length?upcoming.slice(0,5).map(d=>{
+    const o=findById(db.orders,d.orderId), c=o?clientForOrder(o):null;
+    return `<div class="entity-row clickable" onclick="openEntity('delivery','${d.id}')">
+      <div class="entity-main"><strong>${formatDate(d.date)} · ${formatTime(d.time)}</strong><span>${d.orderId} · ${c?.name||"Sin cliente"} · ${d.area}</span></div>
+      <div class="entity-meta"><span class="status ${deliveryStatusClass(d.status)}">${d.status}</span></div>
+    </div>`;
+  }).join(""):`<div class="empty-state">No hay entregas pendientes.</div>`;
+
+  document.getElementById("homeInventory").innerHTML=db.inventory.length?db.inventory.slice(0,5).map(i=>{
+    const [label,cls]=inventoryState(i);
+    return `<div class="entity-row clickable" onclick="openEntity('inventory','${i.id}')">
+      <div class="entity-main"><strong>${i.name}</strong><span>Existencia ${i.onHand} · comprometido ${committedInventory(i.id)} · disponible ${availableInventory(i)} ${i.unit}</span></div>
+      <div class="entity-meta"><span class="status ${cls}">${label}</span></div>
+    </div>`;
+  }).join(""):`<div class="empty-state">No hay inventario registrado.</div>`;
 }
 
 function renderOrders(){
   const status=document.getElementById("orderStatusFilter").value;
   const channel=document.getElementById("orderChannelFilter").value;
-  const q=document.getElementById("globalSearch").value.toLowerCase().trim();
-
-  const rows=db.orders.filter(o=>{
-    const c=clientForOrder(o),p=firstProductForOrder(o),d=deliveryForOrder(o);
-    const hay=[o.id,c.name,c.phone,p.name,o.channel,o.status,o.payment,d?.area||""].join(" ").toLowerCase();
-    return (!status||o.status===status)&&(!channel||o.channel===channel)&&(!q||hay.includes(q));
-  });
-
+  const rows=db.orders.filter(o=>(!status||o.status===status)&&(!channel||o.channel===channel));
   document.getElementById("ordersBody").innerHTML=rows.map(o=>{
-    const c=clientForOrder(o),p=firstProductForOrder(o),d=deliveryForOrder(o);
+    const c=clientForOrder(o), item=o.items[0], p=productForItem(item), d=deliveryForOrder(o);
     return `<tr class="clickable" onclick="openEntity('order','${o.id}')">
       <td><span class="link">${o.id}</span></td>
-      <td><span class="link" onclick="event.stopPropagation();openEntity('client','${c.id}')">${c.name}</span><br><span class="muted" style="font-size:11px">${c.phone}</span></td>
-      <td><span class="link" onclick="event.stopPropagation();openEntity('product','${p.id}')">${p.name}</span></td>
+      <td>${c?`<span class="link" onclick="event.stopPropagation();openEntity('client','${c.id}')">${c.name}</span>`:"—"}</td>
+      <td>${p?`<span class="link" onclick="event.stopPropagation();openEntity('product','${p.id}')">${item.qty} × ${p.name}</span>`:"—"}</td>
       <td>${o.channel}</td>
-      <td><span class="link" onclick="event.stopPropagation();openEntity('delivery','${d.id}')">${d.date} · ${d.time}</span><br><span class="muted" style="font-size:11px">${d.area}</span></td>
+      <td>${d?`<span class="link" onclick="event.stopPropagation();openEntity('delivery','${d.id}')">${formatDate(d.date)} · ${formatTime(d.time)}</span>`:"—"}</td>
       <td class="amount">${money(orderTotal(o))}</td>
       <td>${o.payment}</td>
       <td><span class="status ${orderStatusClass(o.status)}">${o.status}</span></td>
     </tr>`;
   }).join("");
+  document.getElementById("ordersEmpty").style.display=rows.length?"none":"block";
 }
 
 function renderClients(){
-  document.getElementById("clientsBody").innerHTML=db.clients.map(c=>{
+  document.getElementById("clientsBody").innerHTML=db.clients.length?db.clients.map(c=>{
     const orders=clientOrders(c.id);
-    const total=orders.reduce((s,o)=>s+orderTotal(o),0);
+    const total=orders.filter(o=>o.status!=="Cancelado").reduce((s,o)=>s+orderTotal(o),0);
     const last=orders[0];
     return `<tr class="clickable" onclick="openEntity('client','${c.id}')">
       <td><span class="link">${c.name}</span></td>
-      <td>${c.phone}<br><span class="muted" style="font-size:11px">${c.email}</span></td>
+      <td>${c.phone}<br><span class="muted" style="font-size:11px">${c.email||"Sin email"}</span></td>
       <td>${orders.length}</td>
       <td class="amount">${money(total)}</td>
       <td>${last?`<span class="link" onclick="event.stopPropagation();openEntity('order','${last.id}')">${last.id}</span>`:"—"}</td>
     </tr>`;
-  }).join("");
+  }).join(""):emptyRow(5,"Todavía no hay clientes.");
 }
 
 function renderProducts(){
-  document.getElementById("productsGrid").innerHTML=db.products.map(p=>{
-    const count=productOrders(p.id).length;
+  document.getElementById("productsGrid").innerHTML=db.products.length?db.products.map(p=>{
+    const orders=productOrders(p.id);
+    const available=productAvailableUnits(p);
     return `<article class="card product-card" onclick="openEntity('product','${p.id}')">
       <div class="product-thumb"><svg class="svg-icon"><use href="#i-flower"/></svg></div>
       <h3>${p.name}</h3>
-      <p>${p.category} · ${p.recipe.length} componentes en receta</p>
+      <p>${p.category} · ${p.recipe.length} componente${p.recipe.length===1?"":"s"} de inventario</p>
       <div class="price">${money(p.price)}</div>
-      <div class="mini">${count} pedido${count===1?"":"s"} relacionado${count===1?"":"s"}</div>
+      <div class="mini">${available===Infinity?"Sin límite por inventario":`${available} unidades disponibles para vender`} · ${orders.length} pedido${orders.length===1?"":"s"}</div>
     </article>`;
-  }).join("");
+  }).join(""):`<article class="card panel"><div class="empty-state">Todavía no hay productos.</div></article>`;
 }
 
 function renderDeliveries(){
-  document.getElementById("deliveriesBody").innerHTML=db.deliveries.map(d=>{
-    const o=byId(db.orders,d.orderId), c=clientForOrder(o);
+  document.getElementById("deliveriesBody").innerHTML=db.deliveries.length?db.deliveries.map(d=>{
+    const o=findById(db.orders,d.orderId), c=o?clientForOrder(o):null;
     return `<tr class="clickable" onclick="openEntity('delivery','${d.id}')">
       <td><span class="link">${d.id}</span></td>
-      <td><span class="link" onclick="event.stopPropagation();openEntity('order','${o.id}')">${o.id}</span></td>
-      <td><span class="link" onclick="event.stopPropagation();openEntity('client','${c.id}')">${c.name}</span></td>
-      <td>${d.date} · ${d.time}</td>
+      <td>${o?`<span class="link" onclick="event.stopPropagation();openEntity('order','${o.id}')">${o.id}</span>`:"—"}</td>
+      <td>${c?`<span class="link" onclick="event.stopPropagation();openEntity('client','${c.id}')">${c.name}</span>`:"—"}</td>
+      <td>${formatDate(d.date)} · ${formatTime(d.time)}</td>
       <td>${d.area}</td>
       <td>${d.mode}</td>
       <td><span class="status ${deliveryStatusClass(d.status)}">${d.status}</span></td>
     </tr>`;
-  }).join("");
+  }).join(""):emptyRow(7,"Todavía no hay entregas.");
 }
 
 function renderInventory(){
-  document.getElementById("inventoryBody").innerHTML=db.inventory.map(i=>{
-    const [label,cls]=inventoryState(i);
-    const products=inventoryProducts(i.id);
+  document.getElementById("inventoryBody").innerHTML=db.inventory.length?db.inventory.map(i=>{
+    const committed=committedInventory(i.id), available=availableInventory(i), [label,cls]=inventoryState(i);
     return `<tr class="clickable" onclick="openEntity('inventory','${i.id}')">
       <td><span class="link">${i.name}</span></td>
       <td>${i.category}</td>
-      <td>${i.stock} ${i.unit}</td>
+      <td>${i.onHand} ${i.unit}</td>
+      <td>${committed} ${i.unit}</td>
+      <td><strong>${available} ${i.unit}</strong></td>
       <td>${i.min} ${i.unit}</td>
       <td><span class="status ${cls}">${label}</span></td>
-      <td>${products.length} producto${products.length===1?"":"s"}</td>
     </tr>`;
-  }).join("");
+  }).join(""):emptyRow(7,"Todavía no hay inventario.");
 }
 
 function renderSales(){
-  const gross=db.orders.reduce((s,o)=>s+orderTotal(o),0);
-  const paid=db.orders.filter(o=>o.payment==="Pagado").reduce((s,o)=>s+orderTotal(o),0);
-  const pending=db.orders.filter(o=>o.payment!=="Pagado").reduce((s,o)=>s+orderTotal(o),0);
+  const active=activeOrders();
+  const gross=active.reduce((s,o)=>s+orderTotal(o),0);
+  const paid=active.filter(o=>o.payment==="Pagado").reduce((s,o)=>s+orderTotal(o),0);
+  const pending=gross-paid;
   document.getElementById("salesGross").textContent=money(gross);
   document.getElementById("salesPaid").textContent=money(paid);
   document.getElementById("salesPending").textContent=money(pending);
-  document.getElementById("salesAvg").textContent=money(Math.round(gross/db.orders.length));
+  document.getElementById("salesAvg").textContent=money(active.length?Math.round(gross/active.length):0);
 
-  document.getElementById("salesBody").innerHTML=db.orders.map(o=>{
+  document.getElementById("salesBody").innerHTML=db.orders.length?db.orders.map(o=>{
     const c=clientForOrder(o);
     return `<tr class="clickable" onclick="openEntity('order','${o.id}')">
-      <td><span class="link">${o.id}</span></td><td>${c.name}</td><td>${o.channel}</td>
+      <td><span class="link">${o.id}</span></td><td>${c?.name||"—"}</td><td>${o.channel}</td>
       <td class="amount">${money(orderTotal(o))}</td><td>${o.payment}</td>
       <td><span class="status ${orderStatusClass(o.status)}">${o.status}</span></td>
     </tr>`;
-  }).join("");
+  }).join(""):emptyRow(6,"Todavía no hay ventas porque no hay pedidos.");
 }
 
-function rankHtml(entries, valueFormatter=v=>v){
+function rankHtml(entries,valueFormatter=v=>v){
+  if(!entries.length)return `<div class="empty-state">Aún no hay suficientes datos.</div>`;
   return entries.map(([name,value],idx)=>`<div class="rank-row">
     <div class="rank-number">${idx+1}</div>
-    <div><strong>${name}</strong><span>Basado en datos actuales</span></div>
+    <div><strong>${name}</strong><span>Datos del ecosistema</span></div>
     <div class="rank-value">${valueFormatter(value)}</div>
   </div>`).join("");
 }
-
 function renderReports(){
   const prodMap={};
-  db.orders.forEach(o=>o.items.forEach(i=>prodMap[i.productId]=(prodMap[i.productId]||0)+i.qty));
-  const prodEntries=Object.entries(prodMap).map(([id,v])=>[byId(db.products,id).name,v]).sort((a,b)=>b[1]-a[1]);
-  document.getElementById("topProducts").innerHTML=rankHtml(prodEntries,v=>`${v} venta${v===1?"":"s"}`);
+  activeOrders().forEach(o=>o.items.forEach(i=>prodMap[i.productId]=(prodMap[i.productId]||0)+num(i.qty)));
+  const prodEntries=Object.entries(prodMap).map(([id,v])=>[findById(db.products,id)?.name||id,v]).sort((a,b)=>b[1]-a[1]);
+  document.getElementById("topProducts").innerHTML=rankHtml(prodEntries,v=>`${v} unidad${v===1?"":"es"}`);
 
   const chMap={};
-  db.orders.forEach(o=>chMap[o.channel]=(chMap[o.channel]||0)+orderTotal(o));
+  activeOrders().forEach(o=>chMap[o.channel]=(chMap[o.channel]||0)+orderTotal(o));
   document.getElementById("salesByChannel").innerHTML=rankHtml(Object.entries(chMap).sort((a,b)=>b[1]-a[1]),money);
 
-  const clientEntries=db.clients.map(c=>[c.name,clientOrders(c.id).length]).sort((a,b)=>b[1]-a[1]);
+  const clientEntries=db.clients.map(c=>[c.name,clientOrders(c.id).filter(o=>o.status!=="Cancelado").length]).sort((a,b)=>b[1]-a[1]);
   document.getElementById("repeatClients").innerHTML=rankHtml(clientEntries,v=>`${v} pedido${v===1?"":"s"}`);
 
-  const pendingDeliveries=db.deliveries.filter(d=>d.status!=="Entregado").length;
-  const lowStock=db.inventory.filter(i=>i.stock<i.min).length;
-  const unpaid=db.orders.filter(o=>o.payment!=="Pagado").length;
+  const pendD=db.deliveries.filter(d=>d.status!=="Entregado").length;
+  const low=db.inventory.filter(i=>availableInventory(i)<i.min).length;
+  const unpaid=activeOrders().filter(o=>o.payment!=="Pagado").length;
+  const confirmed=activeOrders().filter(o=>["Confirmado","En preparación","Listo","En ruta","Entregado"].includes(o.status)).length;
   document.getElementById("opsHealth").innerHTML=`
-    <div class="metric-pair"><span>Entregas pendientes</span><strong>${pendingDeliveries}</strong></div>
-    <div class="progress"><span style="width:${Math.min(100,pendingDeliveries*18)}%"></span></div>
-    <div class="metric-pair" style="margin-top:18px"><span>Insumos bajo mínimo</span><strong>${lowStock}</strong></div>
-    <div class="progress"><span style="width:${Math.min(100,lowStock*24)}%"></span></div>
-    <div class="metric-pair" style="margin-top:18px"><span>Pedidos no pagados</span><strong>${unpaid}</strong></div>
+    <div class="metric-pair"><span>Entregas pendientes</span><strong>${pendD}</strong></div>
+    <div class="progress"><span style="width:${Math.min(100,pendD*25)}%"></span></div>
+    <div class="metric-pair" style="margin-top:18px"><span>Insumos bajo mínimo</span><strong>${low}</strong></div>
+    <div class="progress"><span style="width:${Math.min(100,low*25)}%"></span></div>
+    <div class="metric-pair" style="margin-top:18px"><span>Pedidos por cobrar</span><strong>${unpaid}</strong></div>
     <div class="progress"><span style="width:${Math.min(100,unpaid*25)}%"></span></div>
+    <div class="metric-pair" style="margin-top:18px"><span>Pedidos confirmados o posteriores</span><strong>${confirmed}</strong></div>
+    <div class="progress"><span style="width:${activeOrders().length?Math.round(confirmed/activeOrders().length*100):0}%"></span></div>
   `;
 }
+function renderAll(){
+  renderHome();renderOrders();renderClients();renderProducts();renderDeliveries();renderInventory();renderSales();renderReports();
+  populateSelects();
+}
 
+/* DRAWER + NAVEGACIÓN INTERNA */
 const overlay=document.getElementById("drawerOverlay");
 const drawer=document.getElementById("drawer");
 const drawerTitle=document.getElementById("drawerTitle");
@@ -963,259 +1171,442 @@ const drawerSubtitle=document.getElementById("drawerSubtitle");
 const drawerBody=document.getElementById("drawerBody");
 const drawerBackBtn=document.getElementById("drawerBackBtn");
 
-let drawerHistory=[];
-let currentDrawerEntity=null;
-
-function updateDrawerBackButton(){
-  drawerBackBtn.style.display=drawerHistory.length ? "grid" : "none";
-}
-
-function openDrawer(title,subtitle,html){
-  drawerTitle.textContent=title;
-  drawerSubtitle.textContent=subtitle||"";
-  drawerBody.innerHTML=html;
-  drawer.classList.add("show");
-  overlay.classList.add("show");
-  updateDrawerBackButton();
-}
-
+function updateBack(){drawerBackBtn.style.display=drawerHistory.length?"grid":"none"}
 function closeDrawer(){
-  drawer.classList.remove("show");
-  overlay.classList.remove("show");
-  drawerHistory=[];
-  currentDrawerEntity=null;
-  updateDrawerBackButton();
+  drawer.classList.remove("show");overlay.classList.remove("show");
+  drawerHistory=[];currentDrawerEntity=null;updateBack();
 }
-
-function goBackInDrawer(){
-  if(!drawerHistory.length) return;
-  const previous=drawerHistory.pop();
+function goBackDrawer(){
+  if(!drawerHistory.length)return;
+  const prev=drawerHistory.pop();
   currentDrawerEntity=null;
-  openEntity(previous.type,previous.id,true);
-  updateDrawerBackButton();
+  openEntity(prev.type,prev.id,true);
 }
-
 document.getElementById("closeDrawerBtn").addEventListener("click",closeDrawer);
-drawerBackBtn.addEventListener("click",goBackInDrawer);
+drawerBackBtn.addEventListener("click",goBackDrawer);
 overlay.addEventListener("click",closeDrawer);
 
+function openDrawer(title,subtitle,html){
+  drawerTitle.textContent=title;drawerSubtitle.textContent=subtitle||"";drawerBody.innerHTML=html;
+  drawer.classList.add("show");overlay.classList.add("show");updateBack();
+}
 function relatedCard(title,sub,type,id){
   return `<div class="related-card" onclick="openEntity('${type}','${id}')">
     <div><strong>${title}</strong><span>${sub||""}</span></div><div class="related-arrow">›</div>
   </div>`;
 }
-
 window.openEntity=function(type,id,fromBack=false){
-  const drawerIsOpen=drawer.classList.contains("show");
-
-  if(!drawerIsOpen){
-    drawerHistory=[];
-    currentDrawerEntity=null;
-  } else if(currentDrawerEntity && !fromBack){
-    drawerHistory.push(currentDrawerEntity);
-  }
-
+  const isOpen=drawer.classList.contains("show");
+  if(!isOpen){drawerHistory=[];currentDrawerEntity=null}
+  else if(currentDrawerEntity&&!fromBack)drawerHistory.push(currentDrawerEntity);
   currentDrawerEntity={type,id};
-  updateDrawerBackButton();
+  updateBack();
 
   if(type==="order"){
-    const o=byId(db.orders,id), c=clientForOrder(o), d=deliveryForOrder(o);
-    const products=o.items.map(i=>byId(db.products,i.productId));
-    openDrawer(o.id,`${c.name} · ${o.channel}`,`
+    const o=findById(db.orders,id);if(!o)return;
+    const c=clientForOrder(o),d=deliveryForOrder(o);
+    openDrawer(o.id,`${c?.name||"Sin cliente"} · ${o.channel}`,`
+      <div class="drawer-actions">
+        <button class="secondary-btn" onclick="openEditOrder('${o.id}')"><svg class="svg-icon"><use href="#i-edit"/></svg>Editar pedido</button>
+      </div>
       <section class="detail-section">
-        <h3>Estado del pedido</h3>
+        <h3>Estado</h3>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <span class="status ${orderStatusClass(o.status)}">${o.status}</span>
           <span class="badge">Pago: ${o.payment}</span>
+          <span class="badge">${o.inventoryConsumed?"Inventario consumido":"Inventario comprometido"}</span>
         </div>
       </section>
       <section class="detail-section">
         <h3>Cliente</h3>
-        ${relatedCard(c.name,`${c.phone} · ${c.email}`,"client",c.id)}
+        ${c?relatedCard(c.name,`${c.phone} · ${c.email||"Sin email"}`,"client",c.id):"<div class='info-box'>Cliente no disponible.</div>"}
       </section>
       <section class="detail-section">
         <h3>Productos</h3>
         ${o.items.map(i=>{
-          const p=byId(db.products,i.productId);
-          return relatedCard(p.name,`${i.qty} unidad · ${money(i.price)}`,"product",p.id);
+          const p=productForItem(i);
+          return p?relatedCard(`${i.qty} × ${p.name}`,`${money(i.unitPrice)} por unidad`,"product",p.id):"";
         }).join("")}
-        <div class="money-box">
-          <div class="money-row"><span>Subtotal</span><strong>${money(orderTotal(o))}</strong></div>
-          <div class="money-row total"><span>Total</span><strong>${money(orderTotal(o))}</strong></div>
-        </div>
+        <div class="money-box"><div class="money-row total"><span>Total</span><strong>${money(orderTotal(o))}</strong></div></div>
       </section>
       <section class="detail-section">
         <h3>Entrega</h3>
-        ${relatedCard(`${d.date} · ${d.time}`,`${d.area} · ${d.mode} · ${d.status}`,"delivery",d.id)}
+        ${d?relatedCard(`${formatDate(d.date)} · ${formatTime(d.time)}`,`${d.mode} · ${d.area} · ${d.status}`,"delivery",d.id):"<div class='info-box'>Este pedido no tiene entrega asociada.</div>"}
       </section>
       <section class="detail-section">
-        <h3>Notas</h3>
-        <div class="info-box">${o.notes||"Sin notas."}</div>
+        <h3>Notas</h3><div class="info-box">${o.notes||"Sin notas."}</div>
       </section>
     `);
   }
 
   if(type==="client"){
-    const c=byId(db.clients,id), orders=clientOrders(id), total=orders.reduce((s,o)=>s+orderTotal(o),0);
+    const c=findById(db.clients,id);if(!c)return;
+    const orders=clientOrders(id),total=orders.filter(o=>o.status!=="Cancelado").reduce((s,o)=>s+orderTotal(o),0);
     openDrawer(c.name,"Ficha de cliente",`
+      <div class="drawer-actions">
+        <button class="secondary-btn" onclick="openClientModal('${c.id}')"><svg class="svg-icon"><use href="#i-edit"/></svg>Editar cliente</button>
+      </div>
       <section class="detail-section">
         <h3>Contacto</h3>
         <div class="detail-grid">
           <div class="detail-item"><small>Teléfono</small><strong>${c.phone}</strong></div>
-          <div class="detail-item"><small>Email</small><strong>${c.email}</strong></div>
+          <div class="detail-item"><small>Email</small><strong>${c.email||"Sin email"}</strong></div>
           <div class="detail-item"><small>Pedidos</small><strong>${orders.length}</strong></div>
           <div class="detail-item"><small>Compras acumuladas</small><strong>${money(total)}</strong></div>
         </div>
       </section>
+      <section class="detail-section"><h3>Notas</h3><div class="info-box">${c.notes||"Sin notas."}</div></section>
       <section class="detail-section">
-        <h3>Historial de pedidos</h3>
-        ${orders.length?orders.map(o=>relatedCard(o.id,`${firstProductForOrder(o).name} · ${money(orderTotal(o))} · ${o.status}`,"order",o.id)).join(""):"<div class='info-box'>Sin pedidos.</div>"}
+        <h3>Pedidos relacionados</h3>
+        ${orders.length?orders.map(o=>relatedCard(o.id,`${productForItem(o.items[0])?.name||"Producto"} · ${money(orderTotal(o))} · ${o.status}`,"order",o.id)).join(""):"<div class='info-box'>Este cliente aún no tiene pedidos.</div>"}
       </section>
     `);
   }
 
   if(type==="product"){
-    const p=byId(db.products,id), orders=productOrders(id);
+    const p=findById(db.products,id);if(!p)return;
+    const orders=productOrders(id);
     openDrawer(p.name,`${p.category} · ${money(p.price)}`,`
+      <div class="drawer-actions">
+        <button class="secondary-btn" onclick="openProductModal('${p.id}')"><svg class="svg-icon"><use href="#i-edit"/></svg>Editar producto</button>
+      </div>
       <section class="detail-section">
         <h3>Información comercial</h3>
         <div class="detail-grid">
           <div class="detail-item"><small>Precio</small><strong>${money(p.price)}</strong></div>
           <div class="detail-item"><small>Categoría</small><strong>${p.category}</strong></div>
-          <div class="detail-item"><small>Pedidos relacionados</small><strong>${orders.length}</strong></div>
-          <div class="detail-item"><small>Componentes</small><strong>${p.recipe.length}</strong></div>
+          <div class="detail-item"><small>Pedidos</small><strong>${orders.length}</strong></div>
+          <div class="detail-item"><small>Disponibilidad calculada</small><strong>${productAvailableUnits(p)===Infinity?"Sin límite":productAvailableUnits(p)+" unidades"}</strong></div>
         </div>
       </section>
       <section class="detail-section">
-        <h3>Receta / Inventario consumido</h3>
-        ${p.recipe.map(([invId,qty])=>{
-          const i=byId(db.inventory,invId);
-          return relatedCard(i.name,`${qty} ${i.unit} por producto · Stock ${i.stock}`,"inventory",i.id);
-        }).join("")}
+        <h3>Receta / inventario</h3>
+        ${p.recipe.length?p.recipe.map(r=>{
+          const inv=findById(db.inventory,r.inventoryId);
+          return inv?relatedCard(inv.name,`${r.qty} ${inv.unit} por unidad · disponible ${availableInventory(inv)}`,"inventory",inv.id):"";
+        }).join(""):"<div class='info-box'>Este producto no consume inventario.</div>"}
       </section>
       <section class="detail-section">
-        <h3>Pedidos con este producto</h3>
-        ${orders.length?orders.map(o=>relatedCard(o.id,`${clientForOrder(o).name} · ${o.status}`,"order",o.id)).join(""):"<div class='info-box'>Todavía no hay pedidos.</div>"}
+        <h3>Pedidos relacionados</h3>
+        ${orders.length?orders.map(o=>relatedCard(o.id,`${clientForOrder(o)?.name||"Cliente"} · ${o.status}`,"order",o.id)).join(""):"<div class='info-box'>Todavía no hay pedidos con este producto.</div>"}
       </section>
     `);
   }
 
   if(type==="delivery"){
-    const d=byId(db.deliveries,id), o=byId(db.orders,d.orderId), c=clientForOrder(o);
-    openDrawer(d.id,`${d.date} · ${d.time}`,`
-      <section class="detail-section">
-        <h3>Estado</h3>
-        <span class="status ${deliveryStatusClass(d.status)}">${d.status}</span>
-      </section>
+    const d=findById(db.deliveries,id);if(!d)return;
+    const o=findById(db.orders,d.orderId),c=o?clientForOrder(o):null;
+    openDrawer(d.id,`${formatDate(d.date)} · ${formatTime(d.time)}`,`
+      <div class="drawer-actions">
+        <button class="secondary-btn" onclick="openDeliveryModal('${d.id}')"><svg class="svg-icon"><use href="#i-edit"/></svg>Editar entrega</button>
+      </div>
+      <section class="detail-section"><h3>Estado</h3><span class="status ${deliveryStatusClass(d.status)}">${d.status}</span></section>
       <section class="detail-section">
         <h3>Pedido relacionado</h3>
-        ${relatedCard(o.id,`${firstProductForOrder(o).name} · ${money(orderTotal(o))}`,"order",o.id)}
+        ${o?relatedCard(o.id,`${productForItem(o.items[0])?.name||"Producto"} · ${money(orderTotal(o))}`,"order",o.id):"<div class='info-box'>Pedido no disponible.</div>"}
       </section>
       <section class="detail-section">
         <h3>Cliente</h3>
-        ${relatedCard(c.name,`${c.phone} · ${c.email}`,"client",c.id)}
+        ${c?relatedCard(c.name,`${c.phone} · ${c.email||"Sin email"}`,"client",c.id):"<div class='info-box'>Cliente no disponible.</div>"}
       </section>
       <section class="detail-section">
         <h3>Logística</h3>
         <div class="detail-grid">
           <div class="detail-item"><small>Modalidad</small><strong>${d.mode}</strong></div>
           <div class="detail-item"><small>Zona</small><strong>${d.area}</strong></div>
-          <div class="detail-item"><small>Fecha</small><strong>${d.date}</strong></div>
-          <div class="detail-item"><small>Hora</small><strong>${d.time}</strong></div>
+          <div class="detail-item"><small>Fecha</small><strong>${formatDate(d.date)}</strong></div>
+          <div class="detail-item"><small>Hora</small><strong>${formatTime(d.time)}</strong></div>
         </div>
       </section>
+      <section class="detail-section"><h3>Notas</h3><div class="info-box">${d.notes||"Sin notas."}</div></section>
     `);
   }
 
   if(type==="inventory"){
-    const i=byId(db.inventory,id), products=inventoryProducts(id), [label,cls]=inventoryState(i);
-    openDrawer(i.name,`${i.category} · ${i.stock} ${i.unit} disponibles`,`
+    const inv=findById(db.inventory,id);if(!inv)return;
+    const [label,cls]=inventoryState(inv),products=inventoryProducts(id);
+    openDrawer(inv.name,`${inv.category} · ${inv.onHand} ${inv.unit} en existencia`,`
+      <div class="drawer-actions">
+        <button class="secondary-btn" onclick="openInventoryModal('${inv.id}')"><svg class="svg-icon"><use href="#i-edit"/></svg>Editar insumo</button>
+        <button class="secondary-btn" onclick="openStockModal('${inv.id}')">Ajustar stock</button>
+      </div>
       <section class="detail-section">
-        <h3>Stock</h3>
+        <h3>Disponibilidad</h3>
         <div class="detail-grid">
-          <div class="detail-item"><small>Disponible</small><strong>${i.stock} ${i.unit}</strong></div>
-          <div class="detail-item"><small>Mínimo</small><strong>${i.min} ${i.unit}</strong></div>
+          <div class="detail-item"><small>Existencia física</small><strong>${inv.onHand} ${inv.unit}</strong></div>
+          <div class="detail-item"><small>Comprometido</small><strong>${committedInventory(inv.id)} ${inv.unit}</strong></div>
+          <div class="detail-item"><small>Disponible</small><strong>${availableInventory(inv)} ${inv.unit}</strong></div>
+          <div class="detail-item"><small>Mínimo</small><strong>${inv.min} ${inv.unit}</strong></div>
           <div class="detail-item"><small>Estado</small><strong><span class="status ${cls}">${label}</span></strong></div>
-          <div class="detail-item"><small>Categoría</small><strong>${i.category}</strong></div>
+          <div class="detail-item"><small>Costo unitario</small><strong>${money(inv.cost)}</strong></div>
         </div>
       </section>
       <section class="detail-section">
         <h3>Productos que lo utilizan</h3>
         ${products.length?products.map(p=>{
-          const recipe=p.recipe.find(r=>r[0]===i.id);
-          return relatedCard(p.name,`${recipe[1]} ${i.unit} por producto`,"product",p.id);
-        }).join(""):"<div class='info-box'>Ningún producto usa este insumo actualmente.</div>"}
+          const r=p.recipe.find(x=>x.inventoryId===inv.id);
+          return relatedCard(p.name,`${r.qty} ${inv.unit} por unidad`,"product",p.id);
+        }).join(""):"<div class='info-box'>Ningún producto usa este insumo.</div>"}
       </section>
     `);
   }
 };
 
-const modal=document.getElementById("orderModal");
-function openOrderModal(){
-  document.getElementById("newOrderClient").innerHTML=db.clients.map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
-  document.getElementById("newOrderProduct").innerHTML=db.products.map(p=>`<option value="${p.id}">${p.name} · ${money(p.price)}</option>`).join("");
-  document.getElementById("newOrderDate").valueAsDate=new Date();
-  modal.classList.add("show");
+/* MODALES */
+function openModal(id){document.getElementById(id).classList.add("show")}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+document.querySelectorAll("[data-close-modal]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.closeModal)));
+document.querySelectorAll(".modal-wrap").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeModal(m.id)}));
+
+function populateSelects(){
+  const clientSel=document.getElementById("orderClient");
+  clientSel.innerHTML=db.clients.length?db.clients.map(c=>`<option value="${c.id}">${c.name}</option>`).join(""):`<option value="">Primero crea un cliente</option>`;
+  const productSel=document.getElementById("orderProduct");
+  productSel.innerHTML=db.products.length?db.products.map(p=>`<option value="${p.id}">${p.name} · ${money(p.price)}</option>`).join(""):`<option value="">Primero crea un producto</option>`;
+
+  document.getElementById("recipeInventorySelect").innerHTML=db.inventory.length?db.inventory.map(i=>`<option value="${i.id}">${i.name} · ${i.unit}</option>`).join(""):`<option value="">Primero crea inventario</option>`;
+  document.getElementById("deliveryOrder").innerHTML=db.orders.length?db.orders.map(o=>`<option value="${o.id}">${o.id} · ${clientForOrder(o)?.name||"Cliente"}</option>`).join(""):`<option value="">Primero crea un pedido</option>`;
 }
-function closeOrderModal(){ modal.classList.remove("show"); }
-document.getElementById("newOrderBtn").addEventListener("click",openOrderModal);
-document.getElementById("closeOrderModal").addEventListener("click",closeOrderModal);
-document.getElementById("cancelOrderModal").addEventListener("click",closeOrderModal);
-modal.addEventListener("click",e=>{if(e.target===modal)closeOrderModal()});
 
-document.getElementById("newOrderForm").addEventListener("submit",e=>{
+/* CLIENTE */
+window.openClientModal=function(id=null){
+  editingClientId=id;
+  const c=id?findById(db.clients,id):null;
+  document.getElementById("clientModalTitle").textContent=c?"Editar cliente":"Nuevo cliente";
+  document.getElementById("clientName").value=c?.name||"";
+  document.getElementById("clientPhone").value=c?.phone||"";
+  document.getElementById("clientEmail").value=c?.email||"";
+  document.getElementById("clientNotes").value=c?.notes||"";
+  openModal("clientModal");
+}
+document.getElementById("newClientBtn").addEventListener("click",()=>openClientModal());
+document.getElementById("clientForm").addEventListener("submit",e=>{
   e.preventDefault();
-  const next=1049+db.orders.length-5;
-  const orderId=`BL-${next}`;
-  const deliveryId=`D${next}`;
-  const product=byId(db.products,document.getElementById("newOrderProduct").value);
-  const dateValue=document.getElementById("newOrderDate").value;
-  const timeValue=document.getElementById("newOrderTime").value;
-  const dateObj=new Date(dateValue+"T12:00:00");
-  const dateLabel=dateObj.toLocaleDateString("es-CR",{day:"2-digit",month:"short"}).replace(".","");
-  const [hh,mm]=timeValue.split(":").map(Number);
-  const suffix=hh>=12?"p. m.":"a. m.";
-  const hour12=((hh+11)%12)+1;
-  const timeLabel=`${hour12}:${String(mm).padStart(2,"0")} ${suffix}`;
-
-  db.deliveries.unshift({
-    id:deliveryId,orderId,mode:document.getElementById("newOrderFulfillment").value,
-    date:dateLabel,time:timeLabel,area:document.getElementById("newOrderArea").value||"Por definir",status:"Pendiente"
-  });
-
-  db.orders.unshift({
-    id:orderId,clientId:document.getElementById("newOrderClient").value,
-    items:[{productId:product.id,qty:1,price:product.price}],
-    channel:document.getElementById("newOrderChannel").value,
-    payment:document.getElementById("newOrderPayment").value,
-    status:document.getElementById("newOrderPayment").value==="Pagado"?"Confirmado":"Pendiente de pago",
-    deliveryId,
-    notes:document.getElementById("newOrderNotes").value
-  });
-
-  closeOrderModal();
-  e.target.reset();
-  renderAll();
-  go("pedidos");
-  showToast(`${orderId} creado y conectado con cliente, producto, entrega y venta.`);
+  if(editingClientId){
+    const c=findById(db.clients,editingClientId);
+    Object.assign(c,{name:clientName.value.trim(),phone:clientPhone.value.trim(),email:clientEmail.value.trim(),notes:clientNotes.value.trim()});
+    showToast("Cliente actualizado.");
+  }else{
+    db.clients.unshift({id:nextId("C",db.clients),name:clientName.value.trim(),phone:clientPhone.value.trim(),email:clientEmail.value.trim(),notes:clientNotes.value.trim()});
+    showToast("Cliente creado.");
+  }
+  saveDB();closeModal("clientModal");renderAll();
+  if(editingClientId){closeDrawer();}
 });
 
+/* INVENTARIO */
+window.openInventoryModal=function(id=null){
+  editingInventoryId=id;
+  const i=id?findById(db.inventory,id):null;
+  document.getElementById("inventoryModalTitle").textContent=i?"Editar insumo":"Nuevo insumo";
+  inventoryName.value=i?.name||"";
+  inventoryCategory.value=i?.category||"Flor";
+  inventoryOnHand.value=i?.onHand??"";
+  inventoryMin.value=i?.min??"";
+  inventoryUnit.value=i?.unit||"";
+  inventoryCost.value=i?.cost??0;
+  openModal("inventoryModal");
+}
+document.getElementById("newInventoryBtn").addEventListener("click",()=>openInventoryModal());
+document.getElementById("inventoryForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const data={name:inventoryName.value.trim(),category:inventoryCategory.value,onHand:num(inventoryOnHand.value),min:num(inventoryMin.value),unit:inventoryUnit.value.trim(),cost:num(inventoryCost.value)};
+  if(editingInventoryId){Object.assign(findById(db.inventory,editingInventoryId),data);showToast("Insumo actualizado.");}
+  else{db.inventory.unshift({id:nextId("I",db.inventory),...data});showToast("Insumo creado.");}
+  saveDB();closeModal("inventoryModal");renderAll();if(editingInventoryId)closeDrawer();
+});
+
+/* PRODUCTO */
+function renderRecipeLines(){
+  document.getElementById("recipeLines").innerHTML=tempRecipe.length?tempRecipe.map((r,idx)=>{
+    const inv=findById(db.inventory,r.inventoryId);
+    return `<div class="recipe-line"><span>${inv?.name||"Insumo"} · ${r.qty} ${inv?.unit||""}</span><button type="button" onclick="removeRecipe(${idx})">Quitar</button></div>`;
+  }).join(""):`<div class="muted" style="font-size:11px;padding-top:8px">Sin componentes agregados.</div>`;
+}
+window.removeRecipe=function(idx){tempRecipe.splice(idx,1);renderRecipeLines()}
+document.getElementById("addRecipeBtn").addEventListener("click",()=>{
+  const invId=recipeInventorySelect.value;
+  const qty=num(recipeQty.value);
+  if(!invId||qty<=0)return showToast("Selecciona un insumo y una cantidad válida.");
+  const existing=tempRecipe.find(r=>r.inventoryId===invId);
+  if(existing)existing.qty+=qty;else tempRecipe.push({inventoryId:invId,qty});
+  renderRecipeLines();
+});
+window.openProductModal=function(id=null){
+  editingProductId=id;
+  const p=id?findById(db.products,id):null;
+  productModalTitle.textContent=p?"Editar producto":"Nuevo producto";
+  productName.value=p?.name||"";
+  productCategory.value=p?.category||"Paquete de flores";
+  productPrice.value=p?.price??"";
+  tempRecipe=p?JSON.parse(JSON.stringify(p.recipe)):[];
+  populateSelects();renderRecipeLines();openModal("productModal");
+}
+document.getElementById("newProductBtn").addEventListener("click",()=>openProductModal());
+document.getElementById("productForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const data={name:productName.value.trim(),category:productCategory.value,price:num(productPrice.value),recipe:JSON.parse(JSON.stringify(tempRecipe))};
+  if(editingProductId){Object.assign(findById(db.products,editingProductId),data);showToast("Producto actualizado.");}
+  else{db.products.unshift({id:nextId("P",db.products),...data});showToast("Producto creado.");}
+  saveDB();closeModal("productModal");renderAll();if(editingProductId)closeDrawer();
+});
+
+/* PEDIDO */
+document.getElementById("newOrderBtn").addEventListener("click",()=>{
+  populateSelects();
+  if(!db.clients.length)return showToast("Primero crea un cliente.");
+  if(!db.products.length)return showToast("Primero crea un producto.");
+  orderQty.value=1;
+  orderDate.value="2026-09-04";
+  orderTime.value="15:00";
+  orderArea.value="";
+  orderNotes.value="";
+  openModal("orderModal");
+});
+document.getElementById("orderForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const p=findById(db.products,orderProduct.value);
+  const qty=num(orderQty.value);
+  if(!p)return showToast("Selecciona un producto.");
+  const max=productAvailableUnits(p);
+  if(max!==Infinity&&qty>max)return showToast(`Inventario insuficiente. Máximo disponible: ${max}.`);
+
+  const oid=nextId("BL-",db.orders);
+  const did=nextId("D",db.deliveries);
+  db.deliveries.unshift({
+    id:did,orderId:oid,mode:orderMode.value,date:orderDate.value,time:orderTime.value,
+    area:orderArea.value.trim(),status:"Pendiente",notes:""
+  });
+  db.orders.unshift({
+    id:oid,clientId:orderClient.value,items:[{productId:p.id,qty,unitPrice:p.price}],
+    channel:orderChannel.value,payment:orderPayment.value,status:orderStatus.value,deliveryId:did,
+    notes:orderNotes.value.trim(),createdAt:new Date().toISOString(),inventoryConsumed:false
+  });
+  saveDB();closeModal("orderModal");renderAll();go("pedidos");showToast(`${oid} creado y conectado con todo el ecosistema.`);
+});
+
+window.openEditOrder=function(id){
+  editingOrderId=id;
+  const o=findById(db.orders,id);if(!o)return;
+  editOrderChannel.value=o.channel;editOrderPayment.value=o.payment;editOrderStatus.value=o.status;editOrderNotes.value=o.notes||"";
+  openModal("orderEditModal");
+}
+document.getElementById("orderEditForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const o=findById(db.orders,editingOrderId);if(!o)return;
+  const oldStatus=o.status;
+  o.channel=editOrderChannel.value;o.payment=editOrderPayment.value;o.status=editOrderStatus.value;o.notes=editOrderNotes.value.trim();
+  if(o.status==="Entregado"&&!o.inventoryConsumed)consumeInventoryForOrder(o);
+  if(o.status==="Entregado"){
+    const d=deliveryForOrder(o);if(d)d.status="Entregado";
+  }
+  saveDB();closeModal("orderEditModal");closeDrawer();renderAll();
+  showToast(oldStatus!==o.status?`Pedido actualizado a ${o.status}.`:"Pedido actualizado.");
+});
+
+/* ENTREGA */
+window.openDeliveryModal=function(id=null){
+  editingDeliveryId=id;
+  populateSelects();
+  const d=id?findById(db.deliveries,id):null;
+  deliveryModalTitle.textContent=d?"Editar entrega":"Nueva entrega";
+  deliveryOrder.disabled=!!d;
+  deliveryOrder.value=d?.orderId||db.orders[0]?.id||"";
+  deliveryMode.value=d?.mode||"Entrega";
+  deliveryStatus.value=d?.status||"Pendiente";
+  deliveryDate.value=d?.date||"2026-09-04";
+  deliveryTime.value=d?.time||"15:00";
+  deliveryArea.value=d?.area||"";
+  deliveryNotes.value=d?.notes||"";
+  if(!db.orders.length)return showToast("Primero crea un pedido.");
+  openModal("deliveryModal");
+}
+document.getElementById("newDeliveryBtn").addEventListener("click",()=>openDeliveryModal());
+document.getElementById("deliveryForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const order=findById(db.orders,deliveryOrder.value);if(!order)return;
+  if(editingDeliveryId){
+    const d=findById(db.deliveries,editingDeliveryId);
+    Object.assign(d,{mode:deliveryMode.value,status:deliveryStatus.value,date:deliveryDate.value,time:deliveryTime.value,area:deliveryArea.value.trim(),notes:deliveryNotes.value.trim()});
+    if(d.status==="Entregado"&&!order.inventoryConsumed){consumeInventoryForOrder(order);order.status="Entregado";}
+    showToast("Entrega actualizada.");
+  }else{
+    const did=nextId("D",db.deliveries);
+    db.deliveries.unshift({id:did,orderId:order.id,mode:deliveryMode.value,status:deliveryStatus.value,date:deliveryDate.value,time:deliveryTime.value,area:deliveryArea.value.trim(),notes:deliveryNotes.value.trim()});
+    order.deliveryId=did;
+    if(deliveryStatus.value==="Entregado"&&!order.inventoryConsumed){consumeInventoryForOrder(order);order.status="Entregado";}
+    showToast("Entrega creada y conectada al pedido.");
+  }
+  deliveryOrder.disabled=false;
+  saveDB();closeModal("deliveryModal");renderAll();if(editingDeliveryId)closeDrawer();
+});
+
+/* STOCK */
+window.openStockModal=function(id){
+  stockItemId=id;
+  const inv=findById(db.inventory,id);if(!inv)return;
+  stockModalSubtitle.textContent=`${inv.name} · actual ${inv.onHand} ${inv.unit}`;
+  stockNewValue.value=inv.onHand;
+  openModal("stockModal");
+}
+document.getElementById("stockForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const inv=findById(db.inventory,stockItemId);if(!inv)return;
+  inv.onHand=num(stockNewValue.value);
+  saveDB();closeModal("stockModal");closeDrawer();renderAll();showToast(`Stock de ${inv.name} actualizado.`);
+});
+
+/* FILTROS */
 document.getElementById("orderStatusFilter").addEventListener("change",renderOrders);
 document.getElementById("orderChannelFilter").addEventListener("change",renderOrders);
-document.getElementById("globalSearch").addEventListener("input",()=>{
-  if(document.getElementById("view-pedidos").classList.contains("active")) renderOrders();
+
+/* BÚSQUEDA GLOBAL */
+const searchInput=document.getElementById("globalSearch");
+const searchResults=document.getElementById("searchResults");
+function hideSearchResults(){searchResults.classList.remove("show");searchResults.innerHTML=""}
+function buildSearchResults(q){
+  const results=[];
+  db.orders.forEach(o=>{
+    const c=clientForOrder(o),p=productForItem(o.items[0]);
+    if([o.id,c?.name,p?.name,o.channel].join(" ").toLowerCase().includes(q))results.push({type:"order",id:o.id,title:o.id,sub:`${c?.name||""} · ${p?.name||""}`,label:"Pedido"});
+  });
+  db.clients.forEach(c=>{if([c.name,c.phone,c.email].join(" ").toLowerCase().includes(q))results.push({type:"client",id:c.id,title:c.name,sub:c.phone,label:"Cliente"})});
+  db.products.forEach(p=>{if([p.name,p.category].join(" ").toLowerCase().includes(q))results.push({type:"product",id:p.id,title:p.name,sub:p.category,label:"Producto"})});
+  db.deliveries.forEach(d=>{if([d.id,d.orderId,d.area,d.status].join(" ").toLowerCase().includes(q))results.push({type:"delivery",id:d.id,title:d.id,sub:`${d.orderId} · ${d.area}`,label:"Entrega"})});
+  db.inventory.forEach(i=>{if([i.name,i.category,i.unit].join(" ").toLowerCase().includes(q))results.push({type:"inventory",id:i.id,title:i.name,sub:`${availableInventory(i)} ${i.unit} disponibles`,label:"Inventario"})});
+  return results.slice(0,8);
+}
+searchInput.addEventListener("input",()=>{
+  const q=searchInput.value.toLowerCase().trim();
+  if(!q)return hideSearchResults();
+  const results=buildSearchResults(q);
+  searchResults.innerHTML=results.length?results.map(r=>`<div class="search-result" onclick="selectSearchResult('${r.type}','${r.id}')">
+    <div><strong>${r.title}</strong><span>${r.sub}</span></div><span class="search-type">${r.label}</span>
+  </div>`).join(""):`<div class="empty-state">Sin resultados.</div>`;
+  searchResults.classList.add("show");
+});
+window.selectSearchResult=function(type,id){hideSearchResults();searchInput.value="";openEntity(type,id)}
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))hideSearchResults()});
+
+/* RESET */
+document.getElementById("resetDemoBtn").addEventListener("click",()=>{
+  if(confirm("¿Deseas borrar tus pruebas locales y volver al único ejemplo inicial?"))resetDemo();
 });
 
+/* TOAST */
 const toast=document.getElementById("toast");
 function showToast(msg){
-  toast.textContent=msg;toast.classList.add("show");clearTimeout(window.__t);
-  window.__t=setTimeout(()=>toast.classList.remove("show"),2400);
+  toast.textContent=msg;toast.classList.add("show");clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>toast.classList.remove("show"),2500);
 }
 
-function renderAll(){
-  renderHome();renderOrders();renderClients();renderProducts();renderDeliveries();
-  renderInventory();renderSales();renderReports();
-}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    closeDrawer();
+    document.querySelectorAll(".modal-wrap.show").forEach(m=>closeModal(m.id));
+  }
+});
+
 renderAll();
 </script>
 </body>
