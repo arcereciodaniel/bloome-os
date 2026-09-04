@@ -289,6 +289,52 @@ tbody tr:last-child td{border-bottom:0}
   pointer-events:none;transition:.22s ease;z-index:50;font-size:13px
 }
 .toast.show{opacity:1;transform:translateY(0)}
+
+/* Login / acceso */
+body.auth-pending .app{display:none}
+.login-screen{
+  position:fixed;inset:0;z-index:100;background:var(--bg);display:none;place-items:center;padding:24px
+}
+.login-screen.show{display:grid}
+.login-card{
+  width:min(430px,100%);background:var(--surface);border:1px solid var(--line);border-radius:24px;
+  box-shadow:var(--shadow-lg);padding:30px
+}
+.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.login-brand .brand-mark{flex:0 0 auto}
+.login-card h1{margin:0 0 8px;font-size:26px;letter-spacing:-.025em}
+.login-card .intro{margin:0 0 24px;color:var(--muted);font-size:13px;line-height:1.55}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;margin-bottom:6px;font-size:11px;font-weight:800;color:#555f69}
+.login-field input{
+  width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 13px;outline:none
+}
+.login-field input:focus{border-color:#b7c7be;box-shadow:0 0 0 4px rgba(47,111,82,.08)}
+.login-error{
+  display:none;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--danger-soft);
+  color:var(--danger);font-size:12px;font-weight:700
+}
+.login-error.show{display:block}
+.login-actions{margin-top:20px}
+.login-actions .primary-btn{width:100%;justify-content:center;padding:12px 14px}
+.login-help{margin-top:16px;text-align:center;font-size:11px;color:var(--muted);line-height:1.5}
+.profile-menu-wrap{position:relative}
+.profile{cursor:pointer}
+.profile-menu{
+  position:absolute;top:52px;right:0;width:190px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;box-shadow:var(--shadow-lg);padding:6px;display:none;z-index:18
+}
+.profile-menu.show{display:block}
+.profile-menu button{
+  width:100%;border:0;background:transparent;text-align:left;padding:10px 11px;border-radius:9px;color:#4b5560;
+  font-size:12px;font-weight:750
+}
+.profile-menu button:hover{background:var(--surface-2)}
+.profile-menu button.danger{color:var(--danger)}
+.password-note{
+  padding:11px 12px;border-radius:11px;background:var(--surface-2);font-size:11px;color:var(--muted);line-height:1.5
+}
+
 @media(max-width:1180px){
   .grid-4{grid-template-columns:repeat(2,1fr)}
   .section-grid,.report-grid{grid-template-columns:1fr}
@@ -308,7 +354,45 @@ tbody tr:last-child td{border-bottom:0}
 }
 </style>
 </head>
-<body>
+<body class="auth-pending">
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-mark">B</div>
+      <div class="brand-text">
+        <strong>Bloomé OS</strong>
+        <span>Acceso al sistema</span>
+      </div>
+    </div>
+
+    <h1>Iniciar sesión</h1>
+    <p class="intro">Ingresa con tu usuario y contraseña para acceder al ecosistema de Bloomé.</p>
+
+    <form id="loginForm">
+      <div class="login-field">
+        <label for="loginUser">Usuario</label>
+        <input id="loginUser" autocomplete="username" required />
+      </div>
+
+      <div class="login-field">
+        <label for="loginPassword">Contraseña</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" required />
+      </div>
+
+      <div class="login-error" id="loginError">Usuario o contraseña incorrectos.</div>
+
+      <div class="login-actions">
+        <button type="submit" class="primary-btn">Ingresar</button>
+      </div>
+    </form>
+
+    <div class="login-help">
+      Esta versión usa acceso local para pruebas. Para producción se recomienda autenticación con backend.
+    </div>
+  </div>
+</div>
+
 
 <svg width="0" height="0" style="position:absolute">
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5.5 10.5V20h13v-9.5"></path></symbol>
@@ -370,11 +454,17 @@ tbody tr:last-child td{border-bottom:0}
           <input id="globalSearch" autocomplete="off" placeholder="Buscar en todo Bloomé OS..." />
           <div class="search-results" id="searchResults"></div>
         </label>
-        <div class="profile">
-          <div class="avatar">G</div>
-          <div class="profile-meta">
-            <strong>Glori</strong>
-            <span>Admin</span>
+        <div class="profile-menu-wrap">
+          <div class="profile" id="profileButton">
+            <div class="avatar">G</div>
+            <div class="profile-meta">
+              <strong>Glori</strong>
+              <span>Admin</span>
+            </div>
+          </div>
+          <div class="profile-menu" id="profileMenu">
+            <button type="button" id="changePasswordBtn">Cambiar contraseña</button>
+            <button type="button" class="danger" id="logoutBtn">Cerrar sesión</button>
           </div>
         </div>
       </div>
@@ -808,6 +898,50 @@ tbody tr:last-child td{border-bottom:0}
       <div class="modal-footer">
         <button type="button" class="secondary-btn" data-close-modal="stockModal">Cancelar</button>
         <button type="submit" class="primary-btn">Guardar ajuste</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- MODAL CAMBIAR CONTRASEÑA -->
+<div class="modal-wrap" id="passwordModal">
+  <div class="modal" style="width:min(520px,100%)">
+    <div class="modal-header">
+      <div>
+        <h2>Cambiar contraseña</h2>
+        <p>Actualiza la contraseña de acceso local de Bloomé OS.</p>
+      </div>
+      <button class="close-btn" data-close-modal="passwordModal">
+        <svg class="svg-icon"><use href="#i-x"/></svg>
+      </button>
+    </div>
+
+    <form id="passwordForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Contraseña actual</label>
+            <input id="currentPassword" type="password" required />
+          </div>
+          <div class="field full">
+            <label>Nueva contraseña</label>
+            <input id="newPassword" type="password" minlength="8" required />
+          </div>
+          <div class="field full">
+            <label>Confirmar nueva contraseña</label>
+            <input id="confirmPassword" type="password" minlength="8" required />
+          </div>
+          <div class="field full">
+            <div class="password-note">
+              La contraseña se guarda como hash en este navegador. Este mecanismo es adecuado para pruebas locales, pero no reemplaza una autenticación de servidor.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="secondary-btn" data-close-modal="passwordModal">Cancelar</button>
+        <button type="submit" class="primary-btn">Guardar contraseña</button>
       </div>
     </form>
   </div>
@@ -1606,6 +1740,105 @@ document.addEventListener("keydown",e=>{
     document.querySelectorAll(".modal-wrap.show").forEach(m=>closeModal(m.id));
   }
 });
+
+
+/* AUTENTICACIÓN LOCAL PARA PROTOTIPO */
+const AUTH_USER_KEY="bloome_auth_user";
+const AUTH_HASH_KEY="bloome_auth_hash";
+const AUTH_SESSION_KEY="bloome_auth_session";
+const DEFAULT_AUTH_USER="glori";
+const DEFAULT_AUTH_HASH="b4c6f7dc728cb4239e1bebb968b798ed6d38282d761181080774f4e62c045343";
+
+async function sha256(text){
+  const data=new TextEncoder().encode(text);
+  const digest=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function ensureDefaultCredentials(){
+  if(!localStorage.getItem(AUTH_USER_KEY))localStorage.setItem(AUTH_USER_KEY,DEFAULT_AUTH_USER);
+  if(!localStorage.getItem(AUTH_HASH_KEY))localStorage.setItem(AUTH_HASH_KEY,DEFAULT_AUTH_HASH);
+}
+
+function showLogin(){
+  document.body.classList.add("auth-pending");
+  document.getElementById("loginScreen").classList.add("show");
+  document.getElementById("loginError").classList.remove("show");
+  document.getElementById("loginPassword").value="";
+  setTimeout(()=>document.getElementById("loginUser").focus(),50);
+}
+
+function unlockApp(){
+  document.body.classList.remove("auth-pending");
+  document.getElementById("loginScreen").classList.remove("show");
+}
+
+function initAuth(){
+  ensureDefaultCredentials();
+  if(sessionStorage.getItem(AUTH_SESSION_KEY)==="1")unlockApp();
+  else showLogin();
+}
+
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const user=document.getElementById("loginUser").value.trim().toLowerCase();
+  const pass=document.getElementById("loginPassword").value;
+  const storedUser=(localStorage.getItem(AUTH_USER_KEY)||"").toLowerCase();
+  const storedHash=localStorage.getItem(AUTH_HASH_KEY)||"";
+  const inputHash=await sha256(pass);
+
+  if(user===storedUser&&inputHash===storedHash){
+    sessionStorage.setItem(AUTH_SESSION_KEY,"1");
+    document.getElementById("loginError").classList.remove("show");
+    unlockApp();
+  }else{
+    document.getElementById("loginError").classList.add("show");
+  }
+});
+
+const profileButton=document.getElementById("profileButton");
+const profileMenu=document.getElementById("profileMenu");
+
+profileButton.addEventListener("click",e=>{
+  e.stopPropagation();
+  profileMenu.classList.toggle("show");
+});
+
+document.addEventListener("click",e=>{
+  if(!e.target.closest(".profile-menu-wrap"))profileMenu.classList.remove("show");
+});
+
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+  profileMenu.classList.remove("show");
+  sessionStorage.removeItem(AUTH_SESSION_KEY);
+  showLogin();
+});
+
+document.getElementById("changePasswordBtn").addEventListener("click",()=>{
+  profileMenu.classList.remove("show");
+  document.getElementById("passwordForm").reset();
+  openModal("passwordModal");
+});
+
+document.getElementById("passwordForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const current=document.getElementById("currentPassword").value;
+  const next=document.getElementById("newPassword").value;
+  const confirm=document.getElementById("confirmPassword").value;
+
+  if(next!==confirm)return showToast("Las contraseñas nuevas no coinciden.");
+  if(next.length<8)return showToast("La nueva contraseña debe tener al menos 8 caracteres.");
+
+  const currentHash=await sha256(current);
+  if(currentHash!==localStorage.getItem(AUTH_HASH_KEY))return showToast("La contraseña actual no es correcta.");
+
+  localStorage.setItem(AUTH_HASH_KEY,await sha256(next));
+  closeModal("passwordModal");
+  showToast("Contraseña actualizada.");
+});
+
+initAuth();
+
 
 renderAll();
 </script>
