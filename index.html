@@ -300,6 +300,7 @@ tbody tr:last-child td{border-bottom:0}
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></symbol>
   <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path><path d="M9 12h10"></path></symbol>
   <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"></path><path d="M14 2v5h5M9 12h6M9 16h6"></path></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5-8 4.5-8-4.5z"></path><path d="M4 7.5V17l8 4 8-4V7.5M12 12v9"></path></symbol>
 </svg>
@@ -616,13 +617,18 @@ tbody tr:last-child td{border-bottom:0}
 <div class="overlay" id="drawerOverlay"></div>
 <aside class="drawer" id="drawer">
   <div class="drawer-header">
-    <div><h2 id="drawerTitle">Detalle</h2><p id="drawerSubtitle"></p></div>
+    <div style="display:flex;align-items:flex-start;gap:10px;min-width:0">
+      <button class="close-btn" id="drawerBackBtn" title="Volver" style="display:none;flex:0 0 auto">
+        <svg class="svg-icon"><use href="#i-arrow-left"/></svg>
+      </button>
+      <div style="min-width:0">
+        <h2 id="drawerTitle">Detalle</h2>
+        <p id="drawerSubtitle"></p>
+      </div>
+    </div>
     <button class="close-btn" id="closeDrawerBtn"><svg class="svg-icon"><use href="#i-x"/></svg></button>
   </div>
   <div class="drawer-body" id="drawerBody"></div>
-  <div class="drawer-footer">
-    <button class="secondary-btn" id="drawerCloseSecondary">Cerrar</button>
-  </div>
 </aside>
 
 <!-- MODAL NUEVO PEDIDO -->
@@ -955,6 +961,14 @@ const drawer=document.getElementById("drawer");
 const drawerTitle=document.getElementById("drawerTitle");
 const drawerSubtitle=document.getElementById("drawerSubtitle");
 const drawerBody=document.getElementById("drawerBody");
+const drawerBackBtn=document.getElementById("drawerBackBtn");
+
+let drawerHistory=[];
+let currentDrawerEntity=null;
+
+function updateDrawerBackButton(){
+  drawerBackBtn.style.display=drawerHistory.length ? "grid" : "none";
+}
 
 function openDrawer(title,subtitle,html){
   drawerTitle.textContent=title;
@@ -962,13 +976,27 @@ function openDrawer(title,subtitle,html){
   drawerBody.innerHTML=html;
   drawer.classList.add("show");
   overlay.classList.add("show");
+  updateDrawerBackButton();
 }
+
 function closeDrawer(){
   drawer.classList.remove("show");
   overlay.classList.remove("show");
+  drawerHistory=[];
+  currentDrawerEntity=null;
+  updateDrawerBackButton();
 }
+
+function goBackInDrawer(){
+  if(!drawerHistory.length) return;
+  const previous=drawerHistory.pop();
+  currentDrawerEntity=null;
+  openEntity(previous.type,previous.id,true);
+  updateDrawerBackButton();
+}
+
 document.getElementById("closeDrawerBtn").addEventListener("click",closeDrawer);
-document.getElementById("drawerCloseSecondary").addEventListener("click",closeDrawer);
+drawerBackBtn.addEventListener("click",goBackInDrawer);
 overlay.addEventListener("click",closeDrawer);
 
 function relatedCard(title,sub,type,id){
@@ -977,7 +1005,19 @@ function relatedCard(title,sub,type,id){
   </div>`;
 }
 
-window.openEntity=function(type,id){
+window.openEntity=function(type,id,fromBack=false){
+  const drawerIsOpen=drawer.classList.contains("show");
+
+  if(!drawerIsOpen){
+    drawerHistory=[];
+    currentDrawerEntity=null;
+  } else if(currentDrawerEntity && !fromBack){
+    drawerHistory.push(currentDrawerEntity);
+  }
+
+  currentDrawerEntity={type,id};
+  updateDrawerBackButton();
+
   if(type==="order"){
     const o=byId(db.orders,id), c=clientForOrder(o), d=deliveryForOrder(o);
     const products=o.items.map(i=>byId(db.products,i.productId));
